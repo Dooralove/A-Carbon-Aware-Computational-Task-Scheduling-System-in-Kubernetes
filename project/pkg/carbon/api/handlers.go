@@ -158,6 +158,9 @@ func (s *Server) handleMetrics(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/plain; version=0.0.4; charset=utf-8")
 	w.WriteHeader(http.StatusOK)
 	s.cache.WriteMetrics(w)
+	if err := s.metrics.WriteText(w); err != nil {
+		s.logger.Error("encode metrics", "err", err)
+	}
 }
 
 func (s *Server) writeError(w http.ResponseWriter, err error) {

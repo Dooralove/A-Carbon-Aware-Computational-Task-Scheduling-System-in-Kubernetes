@@ -66,3 +66,4 @@ NNN_snake_case_title.md
 | [ADR-001](001_mathematical_model_approval.md) | Утверждение и блокировка математической модели | accepted | 2026-09-04 |
 | [ADR-002](002_system_architecture.md) | Системная архитектура двухпроцессного carbon-aware планировщика | accepted | 2026-09-04 |
 | [ADR-002 Freeze](002_system_architecture_and_api_freeze.md) | Заморозка архитектуры, API, Fallback и имён метрик (Quality Gate 3) | accepted | 2026-09-04 |
+| [ADR-003](003_stage7_observability_metrics.md) | Метрики Stage 7 и информационный PostBind плагина | proposed | 2026-10-18 |

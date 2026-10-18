@@ -2,11 +2,13 @@ package scheduler
 
 import (
 	"context"
+	"time"
 
 	v1 "k8s.io/api/core/v1"
 	fwk "k8s.io/kube-scheduler/framework"
 
 	"carbon-aware-k8s/api/v1alpha1"
+	"carbon-aware-k8s/pkg/metrics"
 )
 
 // Score returns the fixed-point value prepared in PreScore (ARCH-05).
@@ -19,6 +21,8 @@ import (
 //
 // Every branch returns Success (FF-INV-08). Missing key → Score_neutral=50.
 func (p *CarbonAwarePlugin) Score(_ context.Context, state fwk.CycleState, _ *v1.Pod, nodeInfo fwk.NodeInfo) (int64, *fwk.Status) {
+	start := time.Now()
+	defer func() { metrics.ObservePluginDuration(metrics.PointScore, time.Since(start)) }()
 	payload, err := readCycleState(state)
 	if err != nil || payload == nil {
 		return v1alpha1.NeutralFixedPointScore(), statusSuccess()

@@ -14,6 +14,7 @@ import (
 
 	"carbon-aware-k8s/api/v1alpha1"
 	"carbon-aware-k8s/pkg/carbon/cache"
+	"carbon-aware-k8s/pkg/metrics"
 )
 
 const (
@@ -30,6 +31,7 @@ type Server struct {
 	http     *http.Server
 	cache    *cache.Cache
 	provider v1alpha1.CarbonProvider
+	metrics  *metrics.CDSMetrics
 	logger   *slog.Logger
 }
 
@@ -41,6 +43,7 @@ func New(addr string, c *cache.Cache, p v1alpha1.CarbonProvider, logger *slog.Lo
 	s := &Server{
 		cache:    c,
 		provider: p,
+		metrics:  metrics.NewCDSMetrics(c),
 		logger:   logger,
 	}
 	s.http = &http.Server{
@@ -89,11 +92,15 @@ func (s *Server) Serve(ctx context.Context) error {
 
 func (s *Server) routes() http.Handler {
 	mux := http.NewServeMux()
-	mux.HandleFunc("GET "+v1alpha1.PathHealth, s.handleHealth)
-	mux.HandleFunc("GET "+v1alpha1.PathHealthz, s.handleHealth)
-	mux.HandleFunc("GET "+v1alpha1.PathZones, s.handleZones)
-	mux.HandleFunc("GET "+v1alpha1.PathCurrent, s.handleCurrent)
-	mux.HandleFunc("GET "+v1alpha1.PathForecast, s.handleForecast)
-	mux.HandleFunc("GET "+v1alpha1.PathMetrics, s.handleMetrics)
+	// carbon_aware_api_requests_total is labelled by route pattern, not raw path.
+	route := func(path string, h http.HandlerFunc) {
+		mux.HandleFunc("GET "+path, s.metrics.Instrument(path, h))
+	}
+	route(v1alpha1.PathHealth, s.handleHealth)
+	route(v1alpha1.PathHealthz, s.handleHealth)
+	route(v1alpha1.PathZones, s.handleZones)
+	route(v1alpha1.PathCurrent, s.handleCurrent)
+	route(v1alpha1.PathForecast, s.handleForecast)
+	route(v1alpha1.PathMetrics, s.handleMetrics)
 	return mux
 }

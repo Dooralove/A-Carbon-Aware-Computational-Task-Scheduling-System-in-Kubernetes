@@ -27,6 +27,12 @@ func TestPluginImplementsOnlyAllowedExtensionPoints(t *testing.T) {
 	if _, ok := p.(fwk.ScoreExtensions); !ok {
 		t.Error("CarbonAwarePlugin must implement fwk.ScoreExtensions")
 	}
+	if _, ok := p.(fwk.PostBindPlugin); !ok {
+		t.Error("ADR-003: PostBind records decision metrics")
+	}
+	if _, ok := p.(fwk.BindPlugin); ok {
+		t.Error("ARCH §6.7: Bind stays with DefaultBinder")
+	}
 	if _, ok := p.(fwk.FilterPlugin); ok {
 		t.Error("SCOPE-OUT-16: Filter is forbidden")
 	}
