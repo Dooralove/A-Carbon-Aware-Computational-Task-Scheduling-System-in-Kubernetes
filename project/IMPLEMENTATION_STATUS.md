@@ -18,6 +18,7 @@
 | 6 | Интеграция в kind: образы, манифесты, e2e-binding | готово, **Gate 6 PASS** (ручной прогон 2026-09-04) | `gate_6_k8s_integration_report.md` |
 | 7 | Мониторинг: Prometheus + Grafana | готово, **Gate 7 PASS** (kind-прогон 2026-10-18, 5×50 Pod) | `gate_7_monitoring_validation.md`, ADR-003 (proposed) |
 | 8 | Автоматизированные e2e / integration / failure-тесты | готово, **Gate 8 PASS** (5 прогонов `make test-all`, 2026-10-18) | `gate_8_testing_audit.md` |
+| 9 | Бенчмарки задержки, масштабируемость, pprof | готово, **Gate 9 PASS** (2026-10-18, in-process kube-scheduler) | `gate_9_performance_scalability_report.md`, `benchmarks/results_latency.json` |
 | — | Эксперименты baseline vs carbon-aware, анализ результатов | **не начат** | — |
 | — | Текст диплома | главы 1–3 (черновики) | `docs/diploma_text/` |
 

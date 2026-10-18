@@ -123,8 +123,12 @@ func (p *CarbonAwarePlugin) now() time.Time {
 	return p.clock.Now().UTC()
 }
 
+// statusSuccess is the nil *Status, which the framework reads as Success
+// (Status.Code on nil). fwk.NewStatus(fwk.Success) would heap-allocate on every
+// Score and NormalizeScore call; Gate 9 requires those hot paths to be
+// allocation-free.
 func statusSuccess() *fwk.Status {
-	return fwk.NewStatus(fwk.Success)
+	return nil
 }
 
 func statusSLA() *fwk.Status {

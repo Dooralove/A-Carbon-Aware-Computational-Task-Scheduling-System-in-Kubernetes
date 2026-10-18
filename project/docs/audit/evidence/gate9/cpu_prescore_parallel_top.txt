@@ -1,0 +1,49 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: cpu
+Time: 2026-10-18 23:16:50 UTC
+Duration: 6.48s, Total samples = 24.51s (378.21%)
+Showing nodes accounting for 19.61s, 80.01% of 24.51s total
+Dropped 341 nodes (cum <= 0.12s)
+Showing top 40 nodes out of 100
+      flat  flat%   sum%        cum   cum%
+     3.08s 12.57% 12.57%     13.73s 56.02%  carbon-aware-k8s/pkg/carbon.IntegrateExpectedFootprint
+     2.28s  9.30% 21.87%      3.88s 15.83%  carbon-aware-k8s/pkg/carbon.sortUniqueTimes
+     2.22s  9.06% 30.93%      2.95s 12.04%  carbon-aware-k8s/pkg/carbon.ciAtSorted
+     1.41s  5.75% 36.68%      3.14s 12.81%  regexp.(*Regexp).tryBacktrack
+     1.34s  5.47% 42.15%      1.43s  5.83%  time.Time.After
+     0.75s  3.06% 45.21%      0.75s  3.06%  regexp.(*bitState).shouldVisit (inline)
+     0.58s  2.37% 47.57%      1.20s  4.90%  carbon-aware-k8s/pkg/carbon.appendInterior
+     0.55s  2.24% 49.82%      0.66s  2.69%  github.com/prometheus/client_golang/prometheus.(*histogramCounts).observe
+     0.51s  2.08% 51.90%     19.91s 81.23%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).evaluateOne
+     0.50s  2.04% 53.94%      0.52s  2.12%  time.Time.Before
+     0.49s  2.00% 55.94%      0.49s  2.00%  regexp/syntax.(*Inst).MatchRunePos
+     0.46s  1.88% 57.81%      0.54s  2.20%  time.Time.Equal
+     0.43s  1.75% 59.57%      0.43s  1.75%  time.Duration.Seconds (inline)
+     0.41s  1.67% 61.24%      0.66s  2.69%  carbon-aware-k8s/api/v1alpha1.ValidateCarbonIntensity
+     0.38s  1.55% 62.79%      2.76s 11.26%  carbon-aware-k8s/api/v1alpha1.ParseNodeEnergyIdentity
+     0.33s  1.35% 64.14%      0.39s  1.59%  time.Time.Add
+     0.31s  1.26% 65.40%      0.45s  1.84%  runtime.tryDeferToSpanScan
+     0.29s  1.18% 66.59%      0.77s  3.14%  time.Time.Sub
+     0.28s  1.14% 67.73%      0.76s  3.10%  carbon-aware-k8s/api/v1alpha1.ForecastInterval.Validate
+     0.28s  1.14% 68.87%     21.87s 89.23%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).evaluateNodes
+     0.24s  0.98% 69.85%      0.41s  1.67%  gcWriteBarrier
+     0.19s  0.78% 70.62%      0.19s  0.78%  aeshashbody
+     0.17s  0.69% 71.32%      0.29s  1.18%  math.IsInf (inline)
+     0.17s  0.69% 72.01%      0.17s  0.69%  time.(*Time).sec (inline)
+     0.17s  0.69% 72.71%      0.17s  0.69%  time.Time.IsZero (inline)
+     0.16s  0.65% 73.36%      0.32s  1.31%  internal/runtime/maps.(*Map).getWithoutKeySmallFastStr
+     0.15s  0.61% 73.97%      0.81s  3.30%  github.com/prometheus/client_golang/prometheus.(*histogram).observe
+     0.15s  0.61% 74.58%      0.35s  1.43%  runtime.mapassign_faststr
+     0.14s  0.57% 75.15%      0.14s  0.57%  regexp.(*bitState).push (inline)
+     0.14s  0.57% 75.72%      0.18s  0.73%  regexp.(*inputString).step
+     0.14s  0.57% 76.30%      0.14s  0.57%  sync/atomic.(*Int32).Add (inline)
+     0.13s  0.53% 76.83%      0.30s  1.22%  time.Time.UTC (inline)
+     0.11s  0.45% 77.27%      0.16s  0.65%  regexp.(*inputs).init (inline)
+     0.10s  0.41% 77.68%      0.22s   0.9%  carbon-aware-k8s/pkg/carbon.intervalEnd
+     0.10s  0.41% 78.09%      3.96s 16.16%  regexp.(*Regexp).doExecute
+     0.10s  0.41% 78.50%      0.14s  0.57%  regexp.(*bitState).reset
+     0.10s  0.41% 78.91%      0.31s  1.26%  runtime.scanObject
+     0.09s  0.37% 79.27%      2.02s  8.24%  carbon-aware-k8s/api/v1alpha1.CarbonRecord.Validate
+     0.09s  0.37% 79.64%      0.52s  2.12%  github.com/prometheus/client_golang/prometheus.(*MetricVec).GetMetricWithLabelValues
+     0.09s  0.37% 80.01%      0.17s  0.69%  time.(*Time).setLoc (inline)

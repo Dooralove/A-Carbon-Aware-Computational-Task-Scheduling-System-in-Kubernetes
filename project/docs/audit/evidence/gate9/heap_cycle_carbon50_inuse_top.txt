@@ -1,0 +1,38 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: inuse_space
+Time: 2026-10-18 23:16:50 UTC
+Showing nodes accounting for 3.03MB, 81.23% of 3.73MB total
+Dropped 425 nodes (cum <= 0.02MB)
+Showing top 30 nodes out of 266
+      flat  flat%   sum%        cum   cum%
+    0.41MB 11.05% 11.05%     0.41MB 11.05%  reflect.unsafe_NewArray
+    0.40MB 10.62% 21.68%     0.40MB 10.62%  reflect.unsafe_New
+    0.34MB  9.04% 30.72%     0.34MB  9.04%  k8s.io/utils/buffer.NewTypedRingGrowing[go.shape.interface {}] (inline)
+    0.25MB  6.80% 37.52%     2.72MB 72.96%  carbon-aware-k8s/benchmarks_test.newSchedEnv
+    0.22MB  5.99% 43.51%     0.22MB  5.99%  go.yaml.in/yaml/v2.(*parser).scalar
+    0.19MB  5.12% 48.64%     0.19MB  5.12%  runtime.mallocgc
+    0.13MB  3.59% 52.22%     0.13MB  3.59%  k8s.io/api/core/v1.(*NodeStatus).DeepCopyInto
+    0.09MB  2.51% 54.73%     0.09MB  2.51%  k8s.io/apimachinery/pkg/watch.(*Broadcaster).Watch.func1
+    0.09MB  2.50% 57.23%     0.09MB  2.50%  carbon-aware-k8s/benchmarks_test.benchNode
+    0.08MB  2.18% 59.41%     0.08MB  2.18%  k8s.io/kubernetes/pkg/scheduler/metrics.NewMetricsAsyncRecorder
+    0.08MB  2.02% 61.43%     0.08MB  2.21%  k8s.io/apimachinery/pkg/runtime.(*Scheme).AddKnownTypeWithName
+    0.06MB  1.63% 63.06%     0.13MB  3.51%  k8s.io/api/core/v1.(*Node).DeepCopy (inline)
+    0.06MB  1.61% 64.66%     0.06MB  1.61%  github.com/google/cel-go/common/decls.(*FunctionDecl).AddOverload
+    0.06MB  1.58% 66.25%     0.10MB  2.81%  k8s.io/api/core/v1.(*Pod).DeepCopy (inline)
+    0.05MB  1.46% 67.71%     0.05MB  1.46%  k8s.io/api/core/v1.(*ResourceRequirements).DeepCopyInto
+    0.05MB  1.41% 69.12%     0.06MB  1.73%  encoding/json.typeFields
+    0.05MB  1.37% 70.49%     0.05MB  1.37%  github.com/prometheus/client_golang/prometheus.MakeLabelPairs
+    0.05MB  1.27% 71.76%     0.08MB  2.02%  sigs.k8s.io/json/internal/golang/encoding/json.typeFields
+    0.04MB  1.10% 72.86%     0.10MB  2.56%  k8s.io/api/core/v1.(*PodSpec).DeepCopyInto
+    0.04MB  1.05% 73.91%     0.04MB  1.05%  go.yaml.in/yaml/v2.read_line
+    0.04MB  1.03% 74.94%     0.04MB  1.03%  k8s.io/apimachinery/pkg/watch.NewRaceFreeFakeWithLogger
+    0.04MB  0.97% 75.92%     0.04MB  0.97%  k8s.io/apimachinery/pkg/apis/meta/v1.(*ObjectMeta).DeepCopyInto
+    0.03MB  0.84% 76.76%     0.03MB  0.84%  k8s.io/apimachinery/pkg/watch.NewLongQueueBroadcaster
+    0.03MB  0.74% 77.50%     0.03MB  0.74%  fmt.Sprintf
+    0.03MB  0.74% 78.24%     0.12MB  3.09%  github.com/google/cel-go/common/decls.NewFunction
+    0.02MB  0.65% 78.89%     0.02MB  0.65%  github.com/google/cel-go/common/decls.(*FunctionDecl).Merge
+    0.02MB  0.64% 79.52%     0.02MB  0.64%  k8s.io/kubernetes/pkg/scheduler/framework.NewNodeInfo
+    0.02MB  0.64% 80.16%     0.03MB  0.74%  github.com/google/cel-go/common/decls.newOverloadInternal
+    0.02MB  0.54% 80.70%     0.26MB  6.83%  github.com/google/cel-go/cel.(*Env).Extend
+    0.02MB  0.54% 81.23%     0.02MB  0.54%  reflect.addReflectOff

@@ -1,0 +1,33 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: delay
+Time: 2026-10-18 23:16:57 UTC
+Showing nodes accounting for 70.96ms, 100% of 70.96ms total
+Dropped 128 nodes (cum <= 0.35ms)
+Showing top 25 nodes out of 100
+      flat  flat%   sum%        cum   cum%
+   48.30ms 68.07% 68.07%    48.30ms 68.07%  runtime.unlock (partial-inline)
+   11.94ms 16.83% 84.90%    11.94ms 16.83%  runtime._LostContendedRuntimeLock
+   10.72ms 15.10%   100%    10.90ms 15.36%  sync.(*Mutex).Unlock (inline)
+         0     0%   100%     8.68ms 12.23%  carbon-aware-k8s/benchmarks_test.BenchmarkSchedulePreScoreParallel.func1
+         0     0%   100%     8.62ms 12.15%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).PreScore
+         0     0%   100%     3.53ms  4.98%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).evaluateNodes
+         0     0%   100%     1.74ms  2.46%  carbon-aware-k8s/pkg/scheduler.assembleCycleState
+         0     0%   100%     3.04ms  4.28%  carbon-aware-k8s/pkg/scheduler.writeDecisionWorks
+         0     0%   100%     4.52ms  6.37%  internal/runtime/maps.(*table).reset
+         0     0%   100%     4.57ms  6.44%  internal/runtime/maps.NewMap
+         0     0%   100%     4.52ms  6.37%  internal/runtime/maps.newGroups (inline)
+         0     0%   100%     4.52ms  6.37%  internal/runtime/maps.newTable
+         0     0%   100%     4.52ms  6.37%  internal/runtime/maps.newarray
+         0     0%   100%     0.40ms  0.57%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Store (inline)
+         0     0%   100%     0.40ms  0.57%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Swap
+         0     0%   100%     0.77ms  1.08%  k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+         0     0%   100%     2.95ms  4.15%  k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext
+         0     0%   100%     2.95ms  4.15%  k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext.func1
+         0     0%   100%     0.66ms  0.94%  k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until (inline)
+         0     0%   100%     2.95ms  4.15%  k8s.io/apimachinery/pkg/util/wait.JitterUntilWithContext
+         0     0%   100%     2.95ms  4.15%  k8s.io/apimachinery/pkg/util/wait.UntilWithContext
+         0     0%   100%     0.66ms  0.94%  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+         0     0%   100%     0.66ms  0.94%  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1
+         0     0%   100%     0.66ms  0.94%  k8s.io/client-go/gentype.(*FakeClient[go.shape.*uint8]).Watch
+         0     0%   100%    10.13ms 14.28%  k8s.io/client-go/gentype.(*alsoFakeLister[go.shape.*uint8,go.shape.*uint8]).List

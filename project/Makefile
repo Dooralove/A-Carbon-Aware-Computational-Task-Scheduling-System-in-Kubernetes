@@ -18,7 +18,7 @@ DOCKERFILE_CARBON     ?= build/Dockerfile.carbon-service
 
 export DOCKER_BUILDKIT = 1
 
-.PHONY: all lint test test-race test-integration e2e-deploy test-e2e test-all build docker-build kind-load kind-up kind-down clean help
+.PHONY: all lint test test-race test-integration e2e-deploy test-e2e test-all bench bench-report build docker-build kind-load kind-up kind-down clean help
 
 all: lint test build
 
@@ -31,6 +31,8 @@ help:
 	@echo "  e2e-deploy    Apply the E2E overlay (tests/e2e/manifests) to kind"
 	@echo "  test-e2e      E2E + chaos suite against the kind cluster"
 	@echo "  test-all      test-race then test-e2e, TEST_REPEAT times (default 1)"
+	@echo "  bench         go test -bench=BenchmarkSchedule -benchmem ./benchmarks/..."
+	@echo "  bench-report  Stage 9 pipeline: load, latency report, pprof, plots"
 	@echo "  build         Build scheduler and carbon-service binaries"
 	@echo "  docker-build  Build distroless images for scheduler and CDS"
 	@echo "  kind-load     Load images into the local kind cluster"
@@ -67,6 +69,12 @@ test-all:
 		$(MAKE) --no-print-directory test-race; \
 		$(MAKE) --no-print-directory test-e2e; \
 	done
+
+bench:
+	$(GO) test -run '^$$' -bench=BenchmarkSchedule -benchmem ./benchmarks/...
+
+bench-report:
+	$(BASH) benchmarks/run_benchmarks.sh
 
 build:
 	$(GO) build -o $(BIN_DIR)/scheduler$(GOEXE) ./cmd/scheduler

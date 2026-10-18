@@ -1,0 +1,147 @@
+{
+  "plugin_prescore_mean_vs_nodes": {
+    "x": [
+      3,
+      5,
+      10,
+      20,
+      50
+    ],
+    "y_us": [
+      14.21,
+      20.92,
+      27.14,
+      50.24,
+      115.83
+    ],
+    "linear_slope_us_per_unit": 2.152,
+    "linear_intercept_us": 7.793,
+    "linear_r2": 0.99842,
+    "loglog_exponent": 0.7302,
+    "loglog_r2": 0.98027
+  },
+  "plugin_total_mean_vs_nodes": {
+    "x": [
+      3,
+      5,
+      10,
+      20,
+      50
+    ],
+    "y_us": [
+      15,
+      22.03,
+      29.03,
+      54.48,
+      124.14
+    ],
+    "linear_slope_us_per_unit": 2.3133,
+    "linear_intercept_us": 8.222,
+    "linear_r2": 0.99868,
+    "loglog_exponent": 0.7384,
+    "loglog_r2": 0.98245
+  },
+  "cycle_mean_default-scheduler": {
+    "x": [
+      3,
+      5,
+      10,
+      20,
+      50
+    ],
+    "y_us": [
+      133.58,
+      148.95,
+      159.6,
+      159.01,
+      221.74
+    ],
+    "linear_slope_us_per_unit": 1.7008,
+    "linear_intercept_us": 134.642,
+    "linear_r2": 0.94872,
+    "loglog_exponent": 0.1575,
+    "loglog_r2": 0.85965
+  },
+  "cycle_mean_carbon-aware-scheduler": {
+    "x": [
+      3,
+      5,
+      10,
+      20,
+      50
+    ],
+    "y_us": [
+      159.2,
+      178.93,
+      209.67,
+      239.43,
+      393.52
+    ],
+    "linear_slope_us_per_unit": 4.8157,
+    "linear_intercept_us": 151.393,
+    "linear_r2": 0.9934,
+    "loglog_exponent": 0.306,
+    "loglog_r2": 0.94269
+  },
+  "cycle_mean_carbon-only-scheduler": {
+    "x": [
+      3,
+      5,
+      10,
+      20,
+      50
+    ],
+    "y_us": [
+      102.44,
+      120.15,
+      137.35,
+      143.83,
+      218.21
+    ],
+    "linear_slope_us_per_unit": 2.2635,
+    "linear_intercept_us": 104.558,
+    "linear_r2": 0.9698,
+    "loglog_exponent": 0.2448,
+    "loglog_r2": 0.93336
+  },
+  "overhead_mean_carbon_aware": {
+    "x": [
+      3,
+      5,
+      10,
+      20,
+      50
+    ],
+    "y_us": [
+      25.62,
+      29.98,
+      50.06,
+      80.42,
+      171.78
+    ],
+    "linear_slope_us_per_unit": 3.115,
+    "linear_intercept_us": 16.748,
+    "linear_r2": 0.99911,
+    "loglog_exponent": 0.6909,
+    "loglog_r2": 0.98746
+  },
+  "prescore_vs_forecast_n20": {
+    "x": [
+      12,
+      48,
+      144,
+      288
+    ],
+    "y_us": [
+      50.501,
+      126.897,
+      336.484,
+      614.184
+    ],
+    "linear_slope_us_per_unit": 2.0452,
+    "linear_intercept_us": 30.462,
+    "linear_r2": 0.99904,
+    "loglog_exponent": 0.79,
+    "loglog_r2": 0.9948
+  }
+}

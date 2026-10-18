@@ -1,0 +1,48 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: alloc_space
+Time: 2026-10-18 23:16:50 UTC
+Showing nodes accounting for 1853.38MB, 93.31% of 1986.30MB total
+Dropped 1138 nodes (cum <= 9.93MB)
+Showing top 40 nodes out of 93
+      flat  flat%   sum%        cum   cum%
+  257.67MB 12.97% 12.97%   352.68MB 17.76%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).RunScorePlugins
+  243.54MB 12.26% 25.23%   243.54MB 12.26%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/noderesources.fitsRequest
+  195.68MB  9.85% 35.08%   195.68MB  9.85%  k8s.io/component-helpers/resource.addResourceList
+  167.62MB  8.44% 43.52%   167.62MB  8.44%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).normalizeScores.func2
+  167.38MB  8.43% 51.95%   259.42MB 13.06%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).runRawScorePlugins
+   92.38MB  4.65% 56.60%    94.74MB  4.77%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).evaluateNodes
+   92.04MB  4.63% 61.24%    92.04MB  4.63%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/noderesources.(*resourceAllocationScorer).calculateNodeAllocatableRequest
+   88.30MB  4.45% 65.68%    94.68MB  4.77%  k8s.io/client-go/util/workqueue.ParallelizeUntil
+   88.12MB  4.44% 70.12%   235.87MB 11.88%  k8s.io/component-helpers/resource.aggregateContainerResourcesByFn
+   80.71MB  4.06% 74.18%    82.98MB  4.18%  carbon-aware-k8s/pkg/scheduler.writeDecisionWorks
+   60.51MB  3.05% 77.23%   106.40MB  5.36%  github.com/go-logr/logr.Logger.WithName
+   45.88MB  2.31% 79.54%    45.88MB  2.31%  k8s.io/klog/v2.klogger.WithName
+   45.81MB  2.31% 81.84%    45.81MB  2.31%  context.WithValue
+   38.44MB  1.94% 83.78%    38.44MB  1.94%  carbon-aware-k8s/pkg/scheduler.assembleCycleState
+   28.83MB  1.45% 85.23%    59.39MB  2.99%  k8s.io/kubernetes/pkg/scheduler.(*Scheduler).findNodesThatPassFilters
+   26.32MB  1.33% 86.56%    26.32MB  1.33%  k8s.io/api/core/v1.ResourceList.DeepCopyInto
+   25.93MB  1.31% 87.86%    25.93MB  1.31%  k8s.io/component-helpers/resource.applyNonMissing
+   22.89MB  1.15% 89.01%    68.70MB  3.46%  github.com/go-logr/logr.NewContext
+   16.97MB  0.85% 89.87%    16.97MB  0.85%  k8s.io/kube-scheduler/framework.NewStatus (inline)
+   16.67MB  0.84% 90.71%    16.67MB  0.84%  k8s.io/apimachinery/pkg/util/sets.Set[go.shape.string].Insert (inline)
+   10.59MB  0.53% 91.24%    11.97MB   0.6%  k8s.io/apimachinery/pkg/api/errors.NewNotFound
+    9.80MB  0.49% 91.73%    61.02MB  3.07%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).normalizeScores
+    6.04MB   0.3% 92.04%    44.41MB  2.24%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/dynamicresources.(*DynamicResources).PreFilter
+    5.48MB  0.28% 92.31%   346.98MB 17.47%  k8s.io/component-helpers/resource.PodRequests
+    3.50MB  0.18% 92.49%    13.93MB   0.7%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/interpodaffinity.(*InterPodAffinity).PreScore
+    3.09MB  0.16% 92.64%    15.06MB  0.76%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/interpodaffinity.GetNamespaceLabelsSnapshot
+    2.86MB  0.14% 92.79%    18.63MB  0.94%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/interpodaffinity.(*InterPodAffinity).PreFilter
+    2.43MB  0.12% 92.91%    17.66MB  0.89%  k8s.io/kubernetes/pkg/scheduler/framework.(*CycleState).Write
+    1.81MB 0.091% 93.00%  1105.73MB 55.67%  k8s.io/kubernetes/pkg/scheduler.(*Scheduler).schedulePod
+    1.52MB 0.077% 93.08%    15.04MB  0.76%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/podtopologyspread.(*PodTopologySpread).PreScore
+    0.92MB 0.046% 93.12%    35.84MB  1.80%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/noderesources.computePodResourceRequest
+    0.82MB 0.041% 93.17%    12.38MB  0.62%  go.yaml.in/yaml/v2.(*parser).mapping
+    0.64MB 0.032% 93.20%   182.89MB  9.21%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/noderesources.(*BalancedAllocation).PreScore
+    0.59MB  0.03% 93.23%    99.07MB  4.99%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/noderesources.(*Fit).PreScore
+    0.58MB 0.029% 93.26%   276.94MB 13.94%  k8s.io/kubernetes/pkg/scheduler/framework/plugins/noderesources.(*resourceAllocationScorer).calculatePodResourceRequestList
+    0.41MB 0.021% 93.28%    12.62MB  0.64%  sigs.k8s.io/structured-merge-diff/v6/typed.ParseableType.FromYAML
+    0.25MB 0.013% 93.29%    23.74MB  1.20%  carbon-aware-k8s/benchmarks_test.newSchedEnv
+    0.19MB 0.0096% 93.30%    12.36MB  0.62%  go.yaml.in/yaml/v2.(*parser).sequence
+    0.16MB 0.0079% 93.31%  1133.10MB 57.05%  carbon-aware-k8s/benchmarks_test.BenchmarkScheduleCycle.func1
+         0     0% 93.31%  1109.04MB 55.83%  carbon-aware-k8s/benchmarks_test.(*schedEnv).cycle
