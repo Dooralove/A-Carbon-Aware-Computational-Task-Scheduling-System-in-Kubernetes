@@ -1,0 +1,884 @@
+{
+  "seed": 42,
+  "python": "3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)]",
+  "numpy": "2.3.5",
+  "verdict": "PASS",
+  "n_checks": 48,
+  "n_failed": 0,
+  "checks": [
+    {
+      "id": "14.1_Pn",
+      "pass": true,
+      "detail": "P_n=70.0"
+    },
+    {
+      "id": "14.1_Ppod",
+      "pass": true,
+      "detail": "P_pod=18.0 u-=0.5 u+=0.8"
+    },
+    {
+      "id": "14.1_attr",
+      "pass": true,
+      "detail": "dyn=18.0+12.0"
+    },
+    {
+      "id": "14.2_hours",
+      "pass": true,
+      "detail": "cf_h=3.6"
+    },
+    {
+      "id": "14.2_seconds",
+      "pass": true,
+      "detail": "cf_s=3.5999999999999996 K=1"
+    },
+    {
+      "id": "14.2_identity",
+      "pass": true,
+      "detail": "hour!=second"
+    },
+    {
+      "id": "14.2_energy",
+      "pass": true,
+      "detail": "E=0.036000000000000004"
+    },
+    {
+      "id": "14.2_cluster_not_pod",
+      "pass": true,
+      "detail": "CF_n=14.0 idle=8.0 pod=3.5999999999999996"
+    },
+    {
+      "id": "2.1_eta_identity",
+      "pass": true,
+      "detail": "2.7777777777777776e-07 vs 2.7777777777777776e-07"
+    },
+    {
+      "id": "14.3_cf",
+      "pass": true,
+      "detail": "[3.5999999999999996, 14.399999999999999]"
+    },
+    {
+      "id": "14.3_sc",
+      "pass": true,
+      "detail": "[1.0, 0.0]"
+    },
+    {
+      "id": "14.3_sr",
+      "pass": true,
+      "detail": "[0.5, 0.30000000000000004]"
+    },
+    {
+      "id": "14.3_sp",
+      "pass": true,
+      "detail": "[0.5, 0.5]"
+    },
+    {
+      "id": "14.3_score",
+      "pass": true,
+      "detail": "[80.0, 16.000000000000004]"
+    },
+    {
+      "id": "14.4_sc_neutral",
+      "pass": true,
+      "detail": "S_C=[0.5, 0.5] (canon is 0.5, not 1.0)"
+    },
+    {
+      "id": "14.4_scores",
+      "pass": true,
+      "detail": "[50.0, 46.0]"
+    },
+    {
+      "id": "14.4_no_div0",
+      "pass": true,
+      "detail": "non-finite Score"
+    },
+    {
+      "id": "14.5_clip",
+      "pass": true,
+      "detail": "u+=1.0 u-=0.9 P=6.0"
+    },
+    {
+      "id": "14.6_fail_closed",
+      "pass": true,
+      "detail": "expected SLAPreconditionFailed"
+    },
+    {
+      "id": "14.6_eligible_sp",
+      "pass": true,
+      "detail": "S_P=0.5"
+    },
+    {
+      "id": "14.6_not_score_zero",
+      "pass": true,
+      "detail": "SLA must raise, not return Score=0"
+    },
+    {
+      "id": "14.7_forecast",
+      "pass": true,
+      "detail": "cf=9.0 K=2"
+    },
+    {
+      "id": "14.7_persistence",
+      "pass": true,
+      "detail": "cf=3.5999999999999996"
+    },
+    {
+      "id": "14.7_B_vs_C_identifiable",
+      "pass": true,
+      "detail": "forecast collapsed to persistence"
+    },
+    {
+      "id": "G-01_neg",
+      "pass": true,
+      "detail": "P=40.0"
+    },
+    {
+      "id": "G-02_alloc0",
+      "pass": true,
+      "detail": "u-=1.0 u+=1.0"
+    },
+    {
+      "id": "G-03",
+      "pass": true,
+      "detail": "expected ConfigError"
+    },
+    {
+      "id": "G-05_single",
+      "pass": true,
+      "detail": "S_C=0.5"
+    },
+    {
+      "id": "G-08_total",
+      "pass": true,
+      "detail": "[50.0, 50.0]"
+    },
+    {
+      "id": "G-09_sc",
+      "pass": true,
+      "detail": "S_C=0.5"
+    },
+    {
+      "id": "G-09_sr_kept",
+      "pass": true,
+      "detail": "S_R should still discriminate"
+    },
+    {
+      "id": "G-10_invalid",
+      "pass": true,
+      "detail": "S_C n1=0.5"
+    },
+    {
+      "id": "G-11_zero_T",
+      "pass": true,
+      "detail": "[(0.0, 0.5), (0.0, 0.5)]"
+    },
+    {
+      "id": "G-14_zero_deadline",
+      "pass": true,
+      "detail": "S_P=1.0"
+    },
+    {
+      "id": "G-18",
+      "pass": true,
+      "detail": "expected ConfigError on weights"
+    },
+    {
+      "id": "G-21_finite",
+      "pass": true,
+      "detail": "[50.0, 46.0]"
+    },
+    {
+      "id": "short_K",
+      "pass": true,
+      "detail": "K=1"
+    },
+    {
+      "id": "short_finite",
+      "pass": true,
+      "detail": "non-finite short"
+    },
+    {
+      "id": "long_finite",
+      "pass": true,
+      "detail": "non-finite long"
+    },
+    {
+      "id": "short_long_same_winner",
+      "pass": true,
+      "detail": "winner changed under persistence"
+    },
+    {
+      "id": "sla_equal_ok",
+      "pass": true,
+      "detail": "S_P=0.0"
+    },
+    {
+      "id": "sla_plus_eps_cut",
+      "pass": true,
+      "detail": "T_hat = T_deadline+eps must hard-cut"
+    },
+    {
+      "id": "sens_conflict",
+      "pass": true,
+      "detail": "dSc=1.0 dSr=-0.7000000000000001"
+    },
+    {
+      "id": "sens_uniform_scale_invariant_sc",
+      "pass": true,
+      "detail": "1.0,0.0 vs 1.0,0.0"
+    },
+    {
+      "id": "vol_B_ne_C",
+      "pass": true,
+      "detail": "disagree_rows=4"
+    },
+    {
+      "id": "complexity_K_bound",
+      "pass": true,
+      "detail": "[(1, 2.0), (1, 2.0), (1, 2.0), (2, 3.0), (6, 7.0), (12, 13.0), (24, 25.0), (48, 49.0), (96, 97.0), (288, 289.0)]"
+    },
+    {
+      "id": "deg_small",
+      "pass": true,
+      "detail": "small delta"
+    },
+    {
+      "id": "deg_large",
+      "pass": true,
+      "detail": "large delta"
+    }
+  ],
+  "oracles": {
+    "p_n_w": 70.0,
+    "p_pod_w": 18.0,
+    "cf_hours_gco2e": 3.6,
+    "cf_seconds_gco2e": 3.5999999999999996,
+    "eta_hour_times_3600": 2.7777777777777776e-07,
+    "eta_per_second": 2.7777777777777776e-07,
+    "oracle_14_3": [
+      {
+        "name": "n1",
+        "score": 80.0,
+        "s_c": 1.0,
+        "cf": 3.5999999999999996
+      },
+      {
+        "name": "n2",
+        "score": 16.000000000000004,
+        "s_c": 0.0,
+        "cf": 14.399999999999999
+      }
+    ],
+    "oracle_14_4": [
+      {
+        "name": "n1",
+        "score": 50.0,
+        "s_c": 0.5
+      },
+      {
+        "name": "n2",
+        "score": 46.0,
+        "s_c": 0.5
+      }
+    ],
+    "cf_forecast_gco2e": 9.0,
+    "cf_persistence_gco2e": 3.5999999999999996
+  },
+  "sensitivity": {
+    "base": [
+      {
+        "name": "clean_busy",
+        "s_c": 1.0,
+        "s_r": 0.09999999999999998,
+        "s_p": 0.5,
+        "score": 72.0,
+        "cf_gco2e": 1.2,
+        "u_plus": 0.9,
+        "p_pod_w": 12.0
+      },
+      {
+        "name": "dirty_empty",
+        "s_c": 0.0,
+        "s_r": 0.8,
+        "s_p": 0.5,
+        "score": 26.0,
+        "cf_gco2e": 9.6,
+        "u_plus": 0.2,
+        "p_pod_w": 12.0
+      }
+    ],
+    "ds_c": 1.0,
+    "ds_r": -0.7000000000000001,
+    "flip_line_wc_over_wr": 0.7000000000000001,
+    "w_c_grid": [
+      0.0,
+      0.02,
+      0.04,
+      0.06,
+      0.08,
+      0.1,
+      0.12,
+      0.14,
+      0.16,
+      0.18,
+      0.2,
+      0.22,
+      0.24,
+      0.26,
+      0.28,
+      0.3,
+      0.32,
+      0.34,
+      0.36,
+      0.38,
+      0.4,
+      0.42,
+      0.44,
+      0.46,
+      0.48,
+      0.5,
+      0.52,
+      0.54,
+      0.56,
+      0.58,
+      0.6,
+      0.62,
+      0.64,
+      0.66,
+      0.68,
+      0.7000000000000001,
+      0.72,
+      0.74,
+      0.76,
+      0.78,
+      0.8,
+      0.8200000000000001,
+      0.84,
+      0.86,
+      0.88,
+      0.9,
+      0.92,
+      0.9400000000000001,
+      0.96,
+      0.98,
+      1.0
+    ],
+    "score_n1": [
+      30.0,
+      31.4,
+      32.8,
+      34.199999999999996,
+      35.6,
+      37.0,
+      38.4,
+      39.800000000000004,
+      41.199999999999996,
+      42.6,
+      44.0,
+      45.4,
+      46.8,
+      48.199999999999996,
+      49.6,
+      51.0,
+      52.400000000000006,
+      53.800000000000004,
+      55.199999999999996,
+      56.599999999999994,
+      57.99999999999999,
+      59.4,
+      60.8,
+      62.2,
+      63.6,
+      65.0,
+      66.4,
+      67.80000000000001,
+      69.2,
+      70.6,
+      72.0,
+      73.4,
+      74.8,
+      76.2,
+      77.60000000000001,
+      79.0,
+      80.4,
+      81.80000000000001,
+      83.2,
+      84.60000000000001,
+      86.00000000000001,
+      87.4,
+      88.8,
+      90.2,
+      91.60000000000001,
+      93.0,
+      94.4,
+      95.80000000000001,
+      97.2,
+      98.6,
+      100.0
+    ],
+    "score_n2": [
+      65.0,
+      63.7,
+      62.4,
+      61.1,
+      59.80000000000001,
+      58.50000000000001,
+      57.2,
+      55.900000000000006,
+      54.6,
+      53.30000000000001,
+      52.0,
+      50.70000000000001,
+      49.400000000000006,
+      48.1,
+      46.8,
+      45.49999999999999,
+      44.199999999999996,
+      42.89999999999999,
+      41.6,
+      40.300000000000004,
+      39.0,
+      37.7,
+      36.400000000000006,
+      35.1,
+      33.800000000000004,
+      32.5,
+      31.2,
+      29.9,
+      28.599999999999998,
+      27.3,
+      26.0,
+      24.700000000000003,
+      23.4,
+      22.099999999999998,
+      20.799999999999997,
+      19.499999999999996,
+      18.200000000000003,
+      16.900000000000002,
+      15.6,
+      14.299999999999999,
+      12.999999999999998,
+      11.699999999999996,
+      10.400000000000002,
+      9.100000000000001,
+      7.8,
+      6.499999999999999,
+      5.1999999999999975,
+      3.8999999999999964,
+      2.6000000000000023,
+      1.3000000000000012,
+      0.0
+    ],
+    "winners_equal_split": [
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "dirty_empty",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy",
+      "clean_busy"
+    ],
+    "wc_vals": [
+      0.0,
+      0.025,
+      0.05,
+      0.07500000000000001,
+      0.1,
+      0.125,
+      0.15000000000000002,
+      0.17500000000000002,
+      0.2,
+      0.225,
+      0.25,
+      0.275,
+      0.30000000000000004,
+      0.325,
+      0.35000000000000003,
+      0.375,
+      0.4,
+      0.42500000000000004,
+      0.45,
+      0.47500000000000003,
+      0.5,
+      0.525,
+      0.55,
+      0.5750000000000001,
+      0.6000000000000001,
+      0.625,
+      0.65,
+      0.675,
+      0.7000000000000001,
+      0.7250000000000001,
+      0.75,
+      0.775,
+      0.8,
+      0.8250000000000001,
+      0.8500000000000001,
+      0.875,
+      0.9,
+      0.925,
+      0.9500000000000001,
+      0.9750000000000001,
+      1.0
+    ],
+    "wr_vals": [
+      0.0,
+      0.025,
+      0.05,
+      0.07500000000000001,
+      0.1,
+      0.125,
+      0.15000000000000002,
+      0.17500000000000002,
+      0.2,
+      0.225,
+      0.25,
+      0.275,
+      0.30000000000000004,
+      0.325,
+      0.35000000000000003,
+      0.375,
+      0.4,
+      0.42500000000000004,
+      0.45,
+      0.47500000000000003,
+      0.5,
+      0.525,
+      0.55,
+      0.5750000000000001,
+      0.6000000000000001,
+      0.625,
+      0.65,
+      0.675,
+      0.7000000000000001,
+      0.7250000000000001,
+      0.75,
+      0.775,
+      0.8,
+      0.8250000000000001,
+      0.8500000000000001,
+      0.875,
+      0.9,
+      0.925,
+      0.9500000000000001,
+      0.9750000000000001,
+      1.0
+    ],
+    "noise_sigma": [
+      0.0,
+      0.05,
+      0.1,
+      0.2,
+      0.35,
+      0.5
+    ],
+    "noise_flip_rate": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.01,
+      0.04
+    ],
+    "noise_mean_margin": [
+      46.0,
+      46.0,
+      46.0,
+      46.0,
+      44.8,
+      41.26
+    ],
+    "n_mc": 1000
+  },
+  "sensitivity_flip_line": 0.7000000000000001,
+  "volatility": {
+    "dt_s": 300.0,
+    "series": [
+      {
+        "t_hat_s": 30.0,
+        "k_north": 1,
+        "k_west": 1,
+        "cf_north": 0.0014999999999999998,
+        "cf_west": 0.03,
+        "score_north": 89.99999999999999,
+        "score_west": 30.000000000000004,
+        "winner_C": "north_volatile",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 60.0,
+        "k_north": 1,
+        "k_west": 1,
+        "cf_north": 0.0029999999999999996,
+        "cf_west": 0.06,
+        "score_north": 89.99999999999999,
+        "score_west": 30.000000000000004,
+        "winner_C": "north_volatile",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 300.0,
+        "k_north": 1,
+        "k_west": 1,
+        "cf_north": 0.014999999999999998,
+        "cf_west": 0.3,
+        "score_north": 89.99999999999999,
+        "score_west": 30.000000000000004,
+        "winner_C": "north_volatile",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 1800.0,
+        "k_north": 6,
+        "k_west": 6,
+        "cf_north": 0.08999999999999998,
+        "cf_west": 1.8,
+        "score_north": 89.99999999999999,
+        "score_west": 30.000000000000004,
+        "winner_C": "north_volatile",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 3600.0,
+        "k_north": 12,
+        "k_west": 12,
+        "cf_north": 0.17999999999999994,
+        "cf_west": 3.599999999999999,
+        "score_north": 89.99999999999999,
+        "score_west": 30.000000000000004,
+        "winner_C": "north_volatile",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 5400.0,
+        "k_north": 18,
+        "k_west": 18,
+        "cf_north": 7.380000000000001,
+        "cf_west": 5.399999999999999,
+        "score_north": 30.000000000000004,
+        "score_west": 89.99999999999999,
+        "winner_C": "west_stable",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 7200.0,
+        "k_north": 24,
+        "k_west": 24,
+        "cf_north": 14.579999999999997,
+        "cf_west": 7.1999999999999975,
+        "score_north": 30.000000000000004,
+        "score_west": 89.99999999999999,
+        "winner_C": "west_stable",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 9000.0,
+        "k_north": 30,
+        "k_west": 30,
+        "cf_north": 14.67,
+        "cf_west": 9.0,
+        "score_north": 30.000000000000004,
+        "score_west": 89.99999999999999,
+        "winner_C": "west_stable",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      },
+      {
+        "t_hat_s": 10800.0,
+        "k_north": 36,
+        "k_west": 36,
+        "cf_north": 14.760000000000003,
+        "cf_west": 10.800000000000004,
+        "score_north": 30.000000000000004,
+        "score_west": 89.99999999999999,
+        "winner_C": "west_stable",
+        "s_b_north": 1.0,
+        "s_b_west": 0.0,
+        "winner_B": "north_volatile"
+      }
+    ]
+  },
+  "complexity": {
+    "dt_s": 300.0,
+    "horizons_s": [
+      30.0,
+      60.0,
+      300.0,
+      600.0,
+      1800.0,
+      3600.0,
+      7200.0,
+      14400.0,
+      28800.0,
+      86400.0
+    ],
+    "k_bound": [
+      2.0,
+      2.0,
+      2.0,
+      3.0,
+      7.0,
+      13.0,
+      25.0,
+      49.0,
+      97.0,
+      289.0
+    ],
+    "k_measured": [
+      1,
+      1,
+      1,
+      2,
+      6,
+      12,
+      24,
+      48,
+      96,
+      288
+    ],
+    "pre_score_integral_us": [
+      9.923950012307614,
+      9.776549995876849,
+      9.906799998134375,
+      10.240349976811558,
+      12.209700013045222,
+      14.966249989811331,
+      23.81379995495081,
+      50.10115000186488,
+      139.70809994498268,
+      986.2591500277632
+    ],
+    "score_lookup_ns": 39.51499820686877,
+    "seed_note": "rng used elsewhere; lookup acc=140000.0 rng=0.276140"
+  },
+  "horizon_sla": {
+    "short_30s": [
+      {
+        "name": "n1",
+        "cf": 0.015,
+        "K": 1,
+        "score": 89.99999999999999
+      },
+      {
+        "name": "n2",
+        "cf": 0.06,
+        "K": 1,
+        "score": 30.000000000000004
+      }
+    ],
+    "long_2_5h": [
+      {
+        "name": "n1",
+        "cf": 4.5,
+        "K": 1,
+        "score": 89.99999999999999
+      },
+      {
+        "name": "n2",
+        "cf": 18.0,
+        "K": 1,
+        "score": 30.000000000000004
+      }
+    ],
+    "sla_equal_sp": 0.0,
+    "sla_eps_cut": true
+  },
+  "degeneracy": {
+    "eps_cf": 1e-06,
+    "neutral_s_c": 0.5
+  },
+  "figures": {
+    "score_vs_wc": {
+      "png": "docs/research/figures/math_model_validation/score_vs_wc.png",
+      "pdf": "docs/research/figures/math_model_validation/score_vs_wc.pdf"
+    },
+    "weight_simplex_margin": {
+      "png": "docs/research/figures/math_model_validation/weight_simplex_margin.png",
+      "pdf": "docs/research/figures/math_model_validation/weight_simplex_margin.pdf"
+    },
+    "ci_noise_flip_rate": {
+      "png": "docs/research/figures/math_model_validation/ci_noise_flip_rate.png",
+      "pdf": "docs/research/figures/math_model_validation/ci_noise_flip_rate.pdf"
+    },
+    "volatility_cf_vs_horizon": {
+      "png": "docs/research/figures/math_model_validation/volatility_cf_vs_horizon.png",
+      "pdf": "docs/research/figures/math_model_validation/volatility_cf_vs_horizon.pdf"
+    },
+    "volatility_score_vs_horizon": {
+      "png": "docs/research/figures/math_model_validation/volatility_score_vs_horizon.png",
+      "pdf": "docs/research/figures/math_model_validation/volatility_score_vs_horizon.pdf"
+    },
+    "complexity_k_vs_T": {
+      "png": "docs/research/figures/math_model_validation/complexity_k_vs_T.png",
+      "pdf": "docs/research/figures/math_model_validation/complexity_k_vs_T.pdf"
+    },
+    "degeneracy_sc": {
+      "png": "docs/research/figures/math_model_validation/degeneracy_sc.png",
+      "pdf": "docs/research/figures/math_model_validation/degeneracy_sc.pdf"
+    }
+  },
+  "notes": {
+    "s_c_on_cf_max_eq_cf_min": 0.5,
+    "s_c_is_not_1_on_degeneracy": true,
+    "eta_s": 2.7777777777777776e-07,
+    "eta_h": 0.001
+  }
+}

@@ -1,0 +1,41 @@
+# syntax=docker/dockerfile:1.7
+# carbon-data-service: Carbon Data Service REST + replay datasets (CFG-04).
+# Build from the repository root:
+#   docker build -f build/Dockerfile.carbon-service -t carbon-data-service:0.1.0 .
+
+ARG GO_IMAGE=golang:1.26.5-bookworm@sha256:53eeac89074db483fdf0ab3be1df32bf6e47562263d2d0d6baa7f26acb4957dd
+# debian12 pin of gcr.io/distroless/static:nonroot (unsuffixed tag is deprecated).
+ARG DISTROLESS_IMAGE=gcr.io/distroless/static-debian12:nonroot@sha256:afa5c872c891853ca7fcf1f12c3edb23f7eeef36189728842dd51042ff57f7ab
+
+FROM ${GO_IMAGE} AS builder
+WORKDIR /src
+
+ENV CGO_ENABLED=0 \
+    GOOS=linux \
+    GOARCH=amd64
+
+COPY go.mod go.sum ./
+RUN --mount=type=cache,target=/go/pkg/mod \
+    go mod download
+
+COPY api ./api
+COPY pkg ./pkg
+COPY cmd/carbon-service ./cmd/carbon-service
+
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+    go build -trimpath -ldflags="-s -w -buildid=" -o /out/carbon-service ./cmd/carbon-service
+
+FROM ${DISTROLESS_IMAGE}
+
+COPY --from=builder --chown=65532:65532 /out/carbon-service /usr/local/bin/carbon-service
+COPY --chown=65532:65532 experiments/datasets/examples/*.json /data/datasets/
+COPY --chown=65532:65532 build/carbon-service.config.yaml /etc/carbon-service/config.yaml
+
+USER 65532:65532
+WORKDIR /home/nonroot
+
+EXPOSE 8080
+
+ENTRYPOINT ["/usr/local/bin/carbon-service"]
+CMD ["-config", "/etc/carbon-service/config.yaml"]

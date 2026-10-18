@@ -1,0 +1,44 @@
+# Local multi-zone kind cluster for the carbon-aware scheduler stand.
+# Cluster name: carbon-aware (SCOPE-IN-11, architecture SSOT §8).
+#
+# Topology: 1 control-plane + 4 workers. Logical energy zones are NOT native
+# kind geography — they are node labels applied by scripts/setup_kind.sh:
+#   worker-01, worker-02 → carbon-aware.io/zone=north
+#   worker-03, worker-04 → carbon-aware.io/zone=west
+#   all workers          → carbon-aware.io/power-profile=standard
+#
+# Node image: Kubernetes 1.37.0, digest from kind v0.33.0 release notes (CFG-03).
+# Keep this file identical to cluster-config.yaml (Stage 6 operational name).
+#
+# extraPortMappings (control-plane): host ports for later NodePort Services (T6.2+).
+#   host 8080  ← node 30080  Carbon Data Service
+#   host 9090  ← node 30090  Prometheus
+#   host 3000  ← node 30300  Grafana
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+name: carbon-aware
+nodes:
+  - role: control-plane
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
+    extraPortMappings:
+      - containerPort: 30080
+        hostPort: 8080
+        protocol: TCP
+      - containerPort: 30090
+        hostPort: 9090
+        protocol: TCP
+      - containerPort: 30300
+        hostPort: 3000
+        protocol: TCP
+  # logical worker-01 → zone north
+  - role: worker
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
+  # logical worker-02 → zone north
+  - role: worker
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
+  # logical worker-03 → zone west
+  - role: worker
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5
+  # logical worker-04 → zone west
+  - role: worker
+    image: kindest/node:v1.37.0@sha256:a1ed56cfb0e7b93589bdf97c8cd566405a265939e3620fc4f5de89adff580ae5

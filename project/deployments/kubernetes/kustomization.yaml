@@ -1,0 +1,8 @@
+# Ordered apply of the runtime stack (not the e2e test pods).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - rbac.yaml
+  - scheduler-config.yaml
+  - carbon-service-deployment.yaml
+  - scheduler-deployment.yaml

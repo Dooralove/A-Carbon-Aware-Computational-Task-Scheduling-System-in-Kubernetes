@@ -1,0 +1,20 @@
+{
+  "zone": "north",
+  "carbonIntensity": 82.4,
+  "unit": "gCO2e/kWh",
+  "timestamp": "2026-09-01T10:00:00Z",
+  "source": "electricity-maps",
+  "sourceZone": "NO-NO1",
+  "freshnessSeconds": 35,
+  "quality": "fresh",
+  "emissionFactorType": "lifecycle",
+  "temporalGranularity": "5_minutes",
+  "intervalSeconds": 300,
+  "carbonFreePercentage": 72.0,
+  "isEstimated": false,
+  "estimationMethod": null,
+  "flowTraced": true,
+  "fetchedAt": "2026-09-01T10:00:35Z",
+  "updatedAt": "2026-09-01T10:00:12Z",
+  "expiresAt": "2026-09-01T10:05:00Z"
+}

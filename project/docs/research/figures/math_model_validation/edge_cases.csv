@@ -1,0 +1,49 @@
+id,pass,detail
+14.1_Pn,1,P_n=70.0
+14.1_Ppod,1,P_pod=18.0 u-=0.5 u+=0.8
+14.1_attr,1,dyn=18.0+12.0
+14.2_hours,1,cf_h=3.6
+14.2_seconds,1,cf_s=3.5999999999999996 K=1
+14.2_identity,1,hour!=second
+14.2_energy,1,E=0.036000000000000004
+14.2_cluster_not_pod,1,CF_n=14.0 idle=8.0 pod=3.5999999999999996
+2.1_eta_identity,1,2.7777777777777776e-07 vs 2.7777777777777776e-07
+14.3_cf,1,[3.5999999999999996; 14.399999999999999]
+14.3_sc,1,[1.0; 0.0]
+14.3_sr,1,[0.5; 0.30000000000000004]
+14.3_sp,1,[0.5; 0.5]
+14.3_score,1,[80.0; 16.000000000000004]
+14.4_sc_neutral,1,S_C=[0.5; 0.5] (canon is 0.5; not 1.0)
+14.4_scores,1,[50.0; 46.0]
+14.4_no_div0,1,non-finite Score
+14.5_clip,1,u+=1.0 u-=0.9 P=6.0
+14.6_fail_closed,1,expected SLAPreconditionFailed
+14.6_eligible_sp,1,S_P=0.5
+14.6_not_score_zero,1,SLA must raise; not return Score=0
+14.7_forecast,1,cf=9.0 K=2
+14.7_persistence,1,cf=3.5999999999999996
+14.7_B_vs_C_identifiable,1,forecast collapsed to persistence
+G-01_neg,1,P=40.0
+G-02_alloc0,1,u-=1.0 u+=1.0
+G-03,1,expected ConfigError
+G-05_single,1,S_C=0.5
+G-08_total,1,[50.0; 50.0]
+G-09_sc,1,S_C=0.5
+G-09_sr_kept,1,S_R should still discriminate
+G-10_invalid,1,S_C n1=0.5
+G-11_zero_T,1,[(0.0; 0.5); (0.0; 0.5)]
+G-14_zero_deadline,1,S_P=1.0
+G-18,1,expected ConfigError on weights
+G-21_finite,1,[50.0; 46.0]
+short_K,1,K=1
+short_finite,1,non-finite short
+long_finite,1,non-finite long
+short_long_same_winner,1,winner changed under persistence
+sla_equal_ok,1,S_P=0.0
+sla_plus_eps_cut,1,T_hat = T_deadline+eps must hard-cut
+sens_conflict,1,dSc=1.0 dSr=-0.7000000000000001
+sens_uniform_scale_invariant_sc,1,1.0;0.0 vs 1.0;0.0
+vol_B_ne_C,1,disagree_rows=4
+complexity_K_bound,1,[(1; 2.0); (1; 2.0); (1; 2.0); (2; 3.0); (6; 7.0); (12; 13.0); (24; 25.0); (48; 49.0); (96; 97.0); (288; 289.0)]
+deg_small,1,small delta
+deg_large,1,large delta

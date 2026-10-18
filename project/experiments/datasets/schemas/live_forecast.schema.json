@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carbon-aware.io/schemas/live_forecast.schema.json",
+  "title": "LiveForecastResponse",
+  "description": "Canonical JSON for GET /api/v1/zones/{zone}/forecast. ForecastArray is ordered by timestamp ascending.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["zone", "unit", "issuedAt", "forecast", "forecastMode"],
+  "properties": {
+    "zone": {
+      "type": "string",
+      "pattern": "^[a-z0-9]([a-z0-9._-]*[a-z0-9])?$"
+    },
+    "unit": {
+      "type": "string",
+      "const": "gCO2e/kWh"
+    },
+    "issuedAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "electricity-maps",
+        "neso",
+        "historical-dataset",
+        "synthetic",
+        "mock"
+      ]
+    },
+    "emissionFactorType": {
+      "type": "string",
+      "enum": ["lifecycle", "direct"]
+    },
+    "temporalGranularity": {
+      "type": "string",
+      "enum": ["5_minutes", "15_minutes", "30_minutes", "60_minutes"]
+    },
+    "forecastMode": {
+      "type": "string",
+      "enum": ["none", "persistence", "recorded"]
+    },
+    "freshnessSeconds": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "forecast": {
+      "type": "array",
+      "maxItems": 288,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["timestamp", "carbonIntensity"],
+        "properties": {
+          "timestamp": { "type": "string", "format": "date-time" },
+          "carbonIntensity": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 2000
+          },
+          "horizonSeconds": { "type": "integer", "minimum": 0 }
+        }
+      }
+    }
+  }
+}

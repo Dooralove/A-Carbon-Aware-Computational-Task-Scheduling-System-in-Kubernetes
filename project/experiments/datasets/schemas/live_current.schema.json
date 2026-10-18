@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carbon-aware.io/schemas/live_current.schema.json",
+  "title": "LiveCurrentResponse",
+  "description": "Canonical JSON for GET /api/v1/zones/{zone}/current. Matches engineering-specification §3.1 plus provenance fields required by freshness and scoring.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "zone",
+    "carbonIntensity",
+    "unit",
+    "timestamp",
+    "source",
+    "freshnessSeconds",
+    "quality",
+    "emissionFactorType"
+  ],
+  "properties": {
+    "zone": {
+      "type": "string",
+      "pattern": "^[a-z0-9]([a-z0-9._-]*[a-z0-9])?$"
+    },
+    "carbonIntensity": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 2000,
+      "description": "gCO2e/kWh"
+    },
+    "unit": {
+      "type": "string",
+      "const": "gCO2e/kWh"
+    },
+    "timestamp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Observation interval start (UTC). Not the fetch time."
+    },
+    "source": {
+      "type": "string",
+      "enum": [
+        "electricity-maps",
+        "neso",
+        "historical-dataset",
+        "synthetic",
+        "mock"
+      ]
+    },
+    "sourceZone": { "type": "string" },
+    "freshnessSeconds": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Cache ingestion age: floor(now - fetchedAt) in seconds. Independent of interval width."
+    },
+    "quality": {
+      "type": "string",
+      "enum": ["fresh", "stale", "estimated", "invalid", "missing"]
+    },
+    "emissionFactorType": {
+      "type": "string",
+      "enum": ["lifecycle", "direct"]
+    },
+    "temporalGranularity": {
+      "type": "string",
+      "enum": ["5_minutes", "15_minutes", "30_minutes", "60_minutes"]
+    },
+    "intervalSeconds": { "type": "integer", "enum": [300, 900, 1800, 3600] },
+    "carbonFreePercentage": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "isEstimated": { "type": "boolean" },
+    "estimationMethod": { "type": ["string", "null"] },
+    "flowTraced": { "type": "boolean" },
+    "fetchedAt": { "type": "string", "format": "date-time" },
+    "updatedAt": { "type": "string", "format": "date-time" },
+    "expiresAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "timestamp + intervalSeconds. Coverage of the observation, not cache TTL."
+    }
+  }
+}

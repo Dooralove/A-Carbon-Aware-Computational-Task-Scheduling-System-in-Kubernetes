@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carbon-aware.io/schemas/electricity_maps.schema.json",
+  "title": "Electricity Maps Carbon Intensity API (v3) response envelopes",
+  "description": "External schemas for ElectricityMapsProvider. Base URL https://api.electricitymap.org/v3. Unit in source docs: gCO2eq/kWh ≡ gCO2e/kWh. Auth: header auth-token. Live use is demonstration-only (SCOPE-EDGE-06).",
+  "$defs": {
+    "carbonIntensityPoint": {
+      "type": "object",
+      "required": ["zone", "carbonIntensity", "datetime"],
+      "properties": {
+        "zone": { "type": "string", "examples": ["DK-DK2", "DE", "FR", "GB"] },
+        "carbonIntensity": {
+          "type": "number",
+          "description": "gCO2eq/kWh. API examples use integer; adapter stores float."
+        },
+        "datetime": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "emissionFactorType": { "type": "string", "enum": ["lifecycle", "direct"] },
+        "flowTraced": { "type": "boolean" },
+        "isEstimated": { "type": "boolean" },
+        "estimationMethod": { "type": ["string", "null"] },
+        "temporalGranularity": {
+          "type": "string",
+          "enum": [
+            "5_minutes",
+            "15_minutes",
+            "hourly",
+            "daily",
+            "monthly",
+            "quarterly",
+            "yearly"
+          ]
+        },
+        "aggregationPeriod": { "type": "string" }
+      }
+    },
+    "latest": {
+      "title": "GET /carbon-intensity/latest",
+      "type": "object",
+      "$ref": "#/$defs/carbonIntensityPoint"
+    },
+    "history": {
+      "title": "GET /carbon-intensity/history",
+      "type": "object",
+      "required": ["zone", "history"],
+      "properties": {
+        "zone": { "type": "string" },
+        "temporalGranularity": { "type": "string" },
+        "history": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/carbonIntensityPoint" }
+        }
+      }
+    },
+    "forecast": {
+      "title": "GET /carbon-intensity/forecast",
+      "type": "object",
+      "required": ["zone", "forecast"],
+      "properties": {
+        "zone": { "type": "string" },
+        "updatedAt": { "type": "string", "format": "date-time" },
+        "forecast": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["carbonIntensity", "datetime"],
+            "properties": {
+              "carbonIntensity": { "type": "number" },
+              "datetime": { "type": "string", "format": "date-time" }
+            }
+          }
+        }
+      }
+    },
+    "pastRange": {
+      "title": "GET /carbon-intensity/past-range",
+      "type": "object",
+      "required": ["zone", "data"],
+      "properties": {
+        "zone": { "type": "string" },
+        "temporalGranularity": { "type": "string" },
+        "aggregationPeriod": { "type": "string" },
+        "data": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/carbonIntensityPoint" }
+        }
+      }
+    }
+  },
+  "oneOf": [
+    { "$ref": "#/$defs/latest" },
+    { "$ref": "#/$defs/history" },
+    { "$ref": "#/$defs/forecast" },
+    { "$ref": "#/$defs/pastRange" }
+  ]
+}
