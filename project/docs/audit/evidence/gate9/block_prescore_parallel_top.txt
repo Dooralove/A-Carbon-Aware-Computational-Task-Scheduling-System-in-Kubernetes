@@ -1,0 +1,30 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: delay
+Time: 2026-10-18 23:16:57 UTC
+Showing nodes accounting for 43.15s, 100% of 43.16s total
+Dropped 201 nodes (cum <= 0.22s)
+      flat  flat%   sum%        cum   cum%
+    30.38s 70.38% 70.38%     30.38s 70.38%  runtime.selectgo
+     6.49s 15.03% 85.41%      6.49s 15.03%  runtime.chanrecv1
+     6.28s 14.55%   100%      6.28s 14.55%  sync.(*WaitGroup).Wait
+         0     0%   100%      6.39s 14.80%  carbon-aware-k8s/benchmarks_test.BenchmarkSchedulePreScoreParallel
+         0     0%   100%      6.04s 14.00%  k8s.io/apimachinery/pkg/util/wait.BackoffUntil
+         0     0%   100%      6.05s 14.01%  k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext
+         0     0%   100%      6.04s 14.00%  k8s.io/apimachinery/pkg/util/wait.JitterUntil
+         0     0%   100%      6.04s 14.00%  k8s.io/apimachinery/pkg/util/wait.Until
+         0     0%   100%     24.16s 55.98%  k8s.io/kubernetes/pkg/scheduler/metrics.(*MetricAsyncRecorder).run
+         0     0%   100%     24.16s 55.98%  k8s.io/kubernetes/pkg/scheduler/metrics.NewMetricsAsyncRecorder.gowrap1
+         0     0%   100%      6.48s 15.02%  main.main
+         0     0%   100%      6.48s 15.02%  runtime.main
+         0     0%   100%      6.48s 15.01%  testing.(*B).Run
+         0     0%   100%      6.28s 14.55%  testing.(*B).RunParallel
+         0     0%   100%      6.30s 14.59%  testing.(*B).doBench
+         0     0%   100%      6.28s 14.56%  testing.(*B).doBench.gowrap1
+         0     0%   100%      6.28s 14.56%  testing.(*B).launch
+         0     0%   100%      6.30s 14.59%  testing.(*B).run
+         0     0%   100%     12.87s 29.81%  testing.(*B).runN
+         0     0%   100%      6.48s 15.02%  testing.(*M).Run
+         0     0%   100%      6.30s 14.59%  testing.(*benchState).processBench
+         0     0%   100%      6.48s 15.01%  testing.runBenchmarks
+         0     0%   100%      6.48s 15.01%  testing.runBenchmarks.func1

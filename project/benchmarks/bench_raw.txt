@@ -1,0 +1,42 @@
+goos: linux
+goarch: amd64
+pkg: carbon-aware-k8s/benchmarks
+cpu: Intel(R) Xeon(R) Processor @ 2.10GHz
+BenchmarkScheduleScorePerNode/nodes=3-4         	 6878953	       173.2 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleScorePerNode/nodes=5-4         	 5790859	       184.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleScorePerNode/nodes=10-4        	 6475342	       176.1 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleScorePerNode/nodes=20-4        	 6376270	       190.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleScorePerNode/nodes=50-4        	 6481275	       181.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSchedulePreScore/nodes=3-4             	  112063	      9549 ns/op	    1664 B/op	      16 allocs/op
+BenchmarkSchedulePreScore/nodes=5-4             	   76543	     16370 ns/op	    1853 B/op	      16 allocs/op
+BenchmarkSchedulePreScore/nodes=10-4            	   43966	     27007 ns/op	    3231 B/op	      20 allocs/op
+BenchmarkSchedulePreScore/nodes=20-4            	   23283	     49197 ns/op	    5770 B/op	      20 allocs/op
+BenchmarkSchedulePreScore/nodes=50-4            	   10000	    130626 ns/op	   11537 B/op	      20 allocs/op
+BenchmarkScheduleNormalizeScore/nodes=3-4       	 7352954	       158.4 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleNormalizeScore/nodes=5-4       	 7210106	       176.9 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleNormalizeScore/nodes=10-4      	 7060616	       184.5 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleNormalizeScore/nodes=20-4      	 5879065	       211.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkScheduleNormalizeScore/nodes=50-4      	 3251314	       331.8 ns/op	       0 B/op	       0 allocs/op
+BenchmarkSchedulePreScoreParallel-4             	   35116	     35208 ns/op	   11528 B/op	      20 allocs/op
+BenchmarkScheduleCycle/profile=default-scheduler/nodes=3-4         	   10000	    104798 ns/op	        99.60 p50-µs	       162.7 p95-µs	       251.1 p99-µs	   33041 B/op	     286 allocs/op
+BenchmarkScheduleCycle/profile=default-scheduler/nodes=5-4         	    8655	    124651 ns/op	       113.2 p50-µs	       201.2 p95-µs	       360.2 p99-µs	   35731 B/op	     320 allocs/op
+BenchmarkScheduleCycle/profile=default-scheduler/nodes=10-4        	    8350	    136758 ns/op	       128.1 p50-µs	       220.8 p95-µs	       357.2 p99-µs	   42410 B/op	     405 allocs/op
+BenchmarkScheduleCycle/profile=default-scheduler/nodes=20-4        	    8358	    159882 ns/op	       147.7 p50-µs	       242.7 p95-µs	       350.9 p99-µs	   53227 B/op	     545 allocs/op
+BenchmarkScheduleCycle/profile=default-scheduler/nodes=50-4        	    5913	    213362 ns/op	       193.8 p50-µs	       329.4 p95-µs	       522.2 p99-µs	   86795 B/op	     975 allocs/op
+BenchmarkScheduleCycle/profile=carbon-aware-scheduler/nodes=3-4    	    8548	    133139 ns/op	       126.3 p50-µs	       203.1 p95-µs	       303.3 p99-µs	   34959 B/op	     303 allocs/op
+BenchmarkScheduleCycle/profile=carbon-aware-scheduler/nodes=5-4    	    7608	    145711 ns/op	       134.8 p50-µs	       229.7 p95-µs	       327.4 p99-µs	   38012 B/op	     337 allocs/op
+BenchmarkScheduleCycle/profile=carbon-aware-scheduler/nodes=10-4   	    6352	    192090 ns/op	       180.9 p50-µs	       277.7 p95-µs	       419.9 p99-µs	   46544 B/op	     426 allocs/op
+BenchmarkScheduleCycle/profile=carbon-aware-scheduler/nodes=20-4   	    4574	    259716 ns/op	       238.0 p50-µs	       370.2 p95-µs	       579.7 p99-µs	   60779 B/op	     567 allocs/op
+BenchmarkScheduleCycle/profile=carbon-aware-scheduler/nodes=50-4   	    3099	    422057 ns/op	       381.4 p50-µs	       636.5 p95-µs	       839.8 p99-µs	  102795 B/op	     996 allocs/op
+BenchmarkScheduleCycle/profile=carbon-only-scheduler/nodes=3-4     	   13990	     79694 ns/op	        79.51 p50-µs	       126.3 p95-µs	       177.4 p99-µs	   15584 B/op	     193 allocs/op
+BenchmarkScheduleCycle/profile=carbon-only-scheduler/nodes=5-4     	   12318	     93881 ns/op	        93.08 p50-µs	       141.8 p95-µs	       196.2 p99-µs	   17565 B/op	     215 allocs/op
+BenchmarkScheduleCycle/profile=carbon-only-scheduler/nodes=10-4    	    9336	    132077 ns/op	       124.5 p50-µs	       193.6 p95-µs	       296.9 p99-µs	   23380 B/op	     274 allocs/op
+BenchmarkScheduleCycle/profile=carbon-only-scheduler/nodes=20-4    	    8559	    137499 ns/op	       127.8 p50-µs	       202.0 p95-µs	       290.3 p99-µs	   32186 B/op	     354 allocs/op
+BenchmarkScheduleCycle/profile=carbon-only-scheduler/nodes=50-4    	    5121	    205688 ns/op	       189.8 p50-µs	       286.1 p95-µs	       442.6 p99-µs	   57331 B/op	     603 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=0-4           	   53398	     23167 ns/op	    5769 B/op	      20 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=12-4          	   23835	     50501 ns/op	    5761 B/op	      20 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=48-4          	    8888	    126897 ns/op	    5765 B/op	      20 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=144-4         	    3618	    336484 ns/op	    5786 B/op	      20 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=288-4         	    1788	    614184 ns/op	    5762 B/op	      20 allocs/op
+PASS
+ok  	carbon-aware-k8s/benchmarks	53.321s

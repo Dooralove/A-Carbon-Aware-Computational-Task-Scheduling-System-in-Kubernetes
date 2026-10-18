@@ -60,24 +60,45 @@ func IntegrateExpectedFootprint(now time.Time, powerWatts float64, horizon time.
 	points[n] = end
 	n++
 
+	// valid caches Validate per interval, and disjoint records whether the
+	// valid intervals are sorted and non-overlapping (the CDS contract). Then
+	// a single forward cursor finds CI for every breakpoint and the integral
+	// is O(F) instead of O(F²) for F forecast intervals (Gate 9).
+	var valid [v1alpha1.MaxForecastIntervals]bool
+	disjoint := len(forecast) <= v1alpha1.MaxForecastIntervals
+	var prevEnd time.Time
 	for i := range forecast {
 		iv := forecast[i]
 		if err := iv.Validate(); err != nil {
 			continue
 		}
-		n = appendInterior(points[:], n, iv.Timestamp.UTC(), now, end)
-		n = appendInterior(points[:], n, intervalEnd(iv), now, end)
+		start, stop := iv.Timestamp.UTC(), intervalEnd(iv).UTC()
+		if disjoint {
+			valid[i] = true
+			if stop.IsZero() || !stop.After(start) || (!prevEnd.IsZero() && start.Before(prevEnd)) {
+				disjoint = false
+			}
+			prevEnd = stop
+		}
+		n = appendInterior(points[:], n, start, now, end)
+		n = appendInterior(points[:], n, stop, now, end)
 	}
 	n = sortUniqueTimes(points[:], n)
 
 	var sum float64
+	cursor := 0
 	for i := 0; i < n-1; i++ {
 		a, b := points[i], points[i+1]
 		dt := b.Sub(a).Seconds()
 		if dt <= 0 {
 			continue
 		}
-		ci := ciAt(a, currentCI, forecast)
+		var ci float64
+		if disjoint {
+			ci, cursor = ciAtSorted(a, currentCI, forecast, valid[:len(forecast)], cursor)
+		} else {
+			ci = ciAt(a, currentCI, forecast)
+		}
 		if err := v1alpha1.ValidateCarbonIntensity(ci); err != nil {
 			return 0, err
 		}
@@ -91,6 +112,20 @@ func IntegrateExpectedFootprint(now time.Time, powerWatts float64, horizon time.
 		return 0, nil
 	}
 	return cf, nil
+}
+
+// ciAtSorted is ciAt for valid intervals that are sorted and disjoint, with t
+// non-decreasing across calls. It skips intervals that end at or before t, so
+// the interval at cursor is the only one that can cover t. It returns the same
+// value as ciAt and the cursor for the next, later t.
+func ciAtSorted(t time.Time, current float64, forecast []v1alpha1.ForecastInterval, valid []bool, cursor int) (float64, int) {
+	for cursor < len(forecast) && (!valid[cursor] || !intervalEnd(forecast[cursor]).UTC().After(t)) {
+		cursor++
+	}
+	if cursor < len(forecast) && !t.Before(forecast[cursor].Timestamp.UTC()) {
+		return forecast[cursor].CarbonIntensityGCO2ePerKWh, cursor
+	}
+	return current, cursor
 }
 
 func inferHorizon(forecast []v1alpha1.ForecastInterval) (time.Time, float64) {

@@ -1,0 +1,33 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: delay
+Time: 2026-10-18 23:16:50 UTC
+Showing nodes accounting for 44.43ms, 100% of 44.43ms total
+Dropped 185 nodes (cum <= 0.22ms)
+Showing top 25 nodes out of 106
+      flat  flat%   sum%        cum   cum%
+   32.49ms 73.13% 73.13%    32.49ms 73.13%  runtime.unlock
+    9.44ms 21.24% 94.37%     9.44ms 21.24%  sync.(*Mutex).Unlock (inline)
+    2.50ms  5.63%   100%     2.50ms  5.63%  runtime._LostContendedRuntimeLock
+         0     0%   100%     3.07ms  6.92%  k8s.io/apimachinery/pkg/util/wait.(*Group).Start.func1
+         0     0%   100%     2.86ms  6.43%  k8s.io/apimachinery/pkg/util/wait.DelayFunc.Until (inline)
+         0     0%   100%     2.86ms  6.43%  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext
+         0     0%   100%     2.86ms  6.43%  k8s.io/apimachinery/pkg/util/wait.loopConditionUntilContext.func1
+         0     0%   100%     2.86ms  6.43%  k8s.io/client-go/gentype.(*FakeClient[go.shape.*uint8]).Watch
+         0     0%   100%     6.44ms 14.50%  k8s.io/client-go/gentype.(*alsoFakeLister[go.shape.*uint8,go.shape.*uint8]).List
+         0     0%   100%     2.19ms  4.94%  k8s.io/client-go/informers/core/v1.NewTypedNodeInformerWithOptions.func3
+         0     0%   100%     0.53ms  1.19%  k8s.io/client-go/informers/core/v1.NewTypedNodeInformerWithOptions.func4
+         0     0%   100%     0.26ms  0.58%  k8s.io/client-go/informers/core/v1.NewTypedPersistentVolumeInformerWithOptions.func3
+         0     0%   100%     1.49ms  3.36%  k8s.io/client-go/informers/core/v1.NewTypedPodInformerWithOptions.func3
+         0     0%   100%     1.54ms  3.47%  k8s.io/client-go/informers/core/v1.NewTypedPodInformerWithOptions.func4
+         0     0%   100%     0.64ms  1.45%  k8s.io/client-go/informers/core/v1.NewTypedServiceInformerWithOptions.func3
+         0     0%   100%     0.65ms  1.45%  k8s.io/client-go/informers/core/v1.NewTypedServiceInformerWithOptions.func4
+         0     0%   100%     0.42ms  0.95%  k8s.io/client-go/informers/storage/v1.NewTypedCSINodeInformerWithOptions.func3
+         0     0%   100%     0.61ms  1.37%  k8s.io/client-go/informers/storage/v1.NewTypedCSIStorageCapacityInformerWithOptions.func3
+         0     0%   100%     2.17ms  4.88%  k8s.io/client-go/kubernetes/typed/core/v1/fake.(*fakeNodes).List
+         0     0%   100%     0.53ms  1.19%  k8s.io/client-go/kubernetes/typed/core/v1/fake.(*fakeNodes).Watch
+         0     0%   100%     0.26ms  0.58%  k8s.io/client-go/kubernetes/typed/core/v1/fake.(*fakePersistentVolumes).List
+         0     0%   100%     1.49ms  3.36%  k8s.io/client-go/kubernetes/typed/core/v1/fake.(*fakePods).List
+         0     0%   100%     1.54ms  3.47%  k8s.io/client-go/kubernetes/typed/core/v1/fake.(*fakePods).Watch
+         0     0%   100%     0.64ms  1.45%  k8s.io/client-go/kubernetes/typed/core/v1/fake.(*fakeServices).List
+         0     0%   100%     0.65ms  1.45%  k8s.io/client-go/kubernetes/typed/core/v1/fake.(*fakeServices).Watch

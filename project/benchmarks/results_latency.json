@@ -1,0 +1,799 @@
+{
+  "generated_at": "2026-10-18T23:16:12Z",
+  "environment": {
+    "cpu_model": "Intel(R) Xeon(R) Processor @ 2.10GHz",
+    "cpus": 4,
+    "go": "go1.26.0",
+    "goarch": "amd64",
+    "gomaxprocs": 4,
+    "goos": "linux",
+    "host": "vm"
+  },
+  "method": {
+    "carbon_data": "real CDS cache + REST on loopback, 3 zones, 12x5min forecast",
+    "cycle_definition": "Cache.UpdateSnapshot + Scheduler.SchedulePod (PreFilter..NormalizeScore, host selection); no bind",
+    "interleaving": "profiles alternate within each round, order rotated per round",
+    "node": "16 CPU, 64Gi, one resident pod (500..1500m)",
+    "plugin_iters": 5000,
+    "pod": "100m CPU, 128Mi, expected-duration 3600s, sla-deadline 14400s",
+    "profiles_source": "../deployments/kubernetes/scheduler-config.yaml (+ upstream default profile)",
+    "rounds": 3000,
+    "scheduler": "k8s.io/kubernetes/pkg/scheduler v1.37.0, in-process, fake clientset",
+    "score_batch": 200,
+    "warmup": 300
+  },
+  "scheduling_cycle": [
+    {
+      "profile": "default-scheduler",
+      "nodes": 3,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 133.58,
+        "std_us": 103.27,
+        "min_us": 35.97,
+        "p50_us": 124.32,
+        "p90_us": 179.99,
+        "p95_us": 210.71,
+        "p99_us": 372.51,
+        "max_us": 3035.63
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 3,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 159.2,
+        "std_us": 112.89,
+        "min_us": 46.23,
+        "p50_us": 147.12,
+        "p90_us": 211.49,
+        "p95_us": 243.92,
+        "p99_us": 453.54,
+        "max_us": 3119.32
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 3,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 102.44,
+        "std_us": 53.11,
+        "min_us": 26.44,
+        "p50_us": 98.4,
+        "p90_us": 145.71,
+        "p95_us": 166.8,
+        "p99_us": 330.2,
+        "max_us": 854.38
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "default-scheduler",
+      "nodes": 5,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 148.95,
+        "std_us": 136.44,
+        "min_us": 41.83,
+        "p50_us": 135.18,
+        "p90_us": 201.37,
+        "p95_us": 236.33,
+        "p99_us": 412.69,
+        "max_us": 4349.61
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 5,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 178.93,
+        "std_us": 87.49,
+        "min_us": 57.44,
+        "p50_us": 167.34,
+        "p90_us": 243.37,
+        "p95_us": 276.99,
+        "p99_us": 448.59,
+        "max_us": 1658.12
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 5,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 120.15,
+        "std_us": 69.33,
+        "min_us": 32.27,
+        "p50_us": 114.23,
+        "p90_us": 170.94,
+        "p95_us": 197.85,
+        "p99_us": 277.9,
+        "max_us": 2705.43
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "default-scheduler",
+      "nodes": 10,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 159.6,
+        "std_us": 71.78,
+        "min_us": 48.16,
+        "p50_us": 149.58,
+        "p90_us": 215.13,
+        "p95_us": 239.42,
+        "p99_us": 390.19,
+        "max_us": 1399.42
+      },
+      "selected_zones": {
+        "north": 2982,
+        "west": 18
+      },
+      "selected_zone_share": {
+        "north": 0.994,
+        "west": 0.006
+      }
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 10,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 209.67,
+        "std_us": 74.83,
+        "min_us": 73.97,
+        "p50_us": 201.23,
+        "p90_us": 277.52,
+        "p95_us": 308.3,
+        "p99_us": 440.74,
+        "max_us": 1757.68
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 10,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 137.35,
+        "std_us": 67.69,
+        "min_us": 42.19,
+        "p50_us": 131.85,
+        "p90_us": 186.73,
+        "p95_us": 207,
+        "p99_us": 284.91,
+        "max_us": 2609.39
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "default-scheduler",
+      "nodes": 20,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 159.01,
+        "std_us": 85.35,
+        "min_us": 62.91,
+        "p50_us": 147.28,
+        "p90_us": 211.34,
+        "p95_us": 238.4,
+        "p99_us": 367.9,
+        "max_us": 2532.86
+      },
+      "selected_zones": {
+        "central": 1,
+        "north": 2990,
+        "west": 9
+      },
+      "selected_zone_share": {
+        "central": 0,
+        "north": 0.997,
+        "west": 0.003
+      }
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 20,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 239.43,
+        "std_us": 144.23,
+        "min_us": 111.74,
+        "p50_us": 216.86,
+        "p90_us": 308.81,
+        "p95_us": 346.97,
+        "p99_us": 539.02,
+        "max_us": 4080.07
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 20,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 143.83,
+        "std_us": 75.28,
+        "min_us": 57.49,
+        "p50_us": 132.51,
+        "p90_us": 191.56,
+        "p95_us": 220.38,
+        "p99_us": 361.84,
+        "max_us": 2226.44
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "default-scheduler",
+      "nodes": 50,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 221.74,
+        "std_us": 81.32,
+        "min_us": 107.62,
+        "p50_us": 208.49,
+        "p90_us": 279.39,
+        "p95_us": 314.34,
+        "p99_us": 491.77,
+        "max_us": 2397.79
+      },
+      "selected_zones": {
+        "north": 2964,
+        "west": 36
+      },
+      "selected_zone_share": {
+        "north": 0.988,
+        "west": 0.012
+      }
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 50,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 393.52,
+        "std_us": 139.14,
+        "min_us": 220.67,
+        "p50_us": 363.4,
+        "p90_us": 506.85,
+        "p95_us": 562.54,
+        "p99_us": 769.26,
+        "max_us": 3267.36
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 50,
+      "latency": {
+        "samples": 3000,
+        "mean_us": 218.21,
+        "std_us": 96.55,
+        "min_us": 101.4,
+        "p50_us": 205.87,
+        "p90_us": 275.39,
+        "p95_us": 304.62,
+        "p99_us": 421.65,
+        "max_us": 3167.1
+      },
+      "selected_zones": {
+        "north": 3000
+      },
+      "selected_zone_share": {
+        "north": 1
+      }
+    }
+  ],
+  "overhead_vs_default": [
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 3,
+      "mean_delta_us": 25.62,
+      "mean_delta_ci95_us": 5.48,
+      "p50_delta_us": 22.8,
+      "p95_delta_us": 33.21,
+      "p99_delta_us": 81.03,
+      "p50_delta_pct": 18.34
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 3,
+      "mean_delta_us": -31.14,
+      "mean_delta_ci95_us": 4.16,
+      "p50_delta_us": -25.92,
+      "p95_delta_us": -43.91,
+      "p99_delta_us": -42.31,
+      "p50_delta_pct": -20.85
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 5,
+      "mean_delta_us": 29.98,
+      "mean_delta_ci95_us": 5.8,
+      "p50_delta_us": 32.16,
+      "p95_delta_us": 40.66,
+      "p99_delta_us": 35.9,
+      "p50_delta_pct": 23.79
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 5,
+      "mean_delta_us": -28.8,
+      "mean_delta_ci95_us": 5.48,
+      "p50_delta_us": -20.95,
+      "p95_delta_us": -38.48,
+      "p99_delta_us": -134.79,
+      "p50_delta_pct": -15.5
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 10,
+      "mean_delta_us": 50.06,
+      "mean_delta_ci95_us": 3.71,
+      "p50_delta_us": 51.65,
+      "p95_delta_us": 68.88,
+      "p99_delta_us": 50.55,
+      "p50_delta_pct": 34.53
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 10,
+      "mean_delta_us": -22.25,
+      "mean_delta_ci95_us": 3.53,
+      "p50_delta_us": -17.73,
+      "p95_delta_us": -32.42,
+      "p99_delta_us": -105.28,
+      "p50_delta_pct": -11.85
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 20,
+      "mean_delta_us": 80.42,
+      "mean_delta_ci95_us": 6,
+      "p50_delta_us": 69.58,
+      "p95_delta_us": 108.57,
+      "p99_delta_us": 171.12,
+      "p50_delta_pct": 47.24
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 20,
+      "mean_delta_us": -15.18,
+      "mean_delta_ci95_us": 4.07,
+      "p50_delta_us": -14.77,
+      "p95_delta_us": -18.02,
+      "p99_delta_us": -6.06,
+      "p50_delta_pct": -10.03
+    },
+    {
+      "profile": "carbon-aware-scheduler",
+      "nodes": 50,
+      "mean_delta_us": 171.78,
+      "mean_delta_ci95_us": 5.77,
+      "p50_delta_us": 154.91,
+      "p95_delta_us": 248.2,
+      "p99_delta_us": 277.49,
+      "p50_delta_pct": 74.3
+    },
+    {
+      "profile": "carbon-only-scheduler",
+      "nodes": 50,
+      "mean_delta_us": -3.52,
+      "mean_delta_ci95_us": 4.52,
+      "p50_delta_us": -2.62,
+      "p95_delta_us": -9.72,
+      "p99_delta_us": -70.12,
+      "p50_delta_pct": -1.26
+    }
+  ],
+  "plugin_extension_points": [
+    {
+      "nodes": 3,
+      "prescore": {
+        "samples": 5000,
+        "mean_us": 14.21,
+        "std_us": 7.37,
+        "min_us": 7.58,
+        "p50_us": 13.69,
+        "p90_us": 16.79,
+        "p95_us": 21.05,
+        "p99_us": 37.6,
+        "max_us": 218.71
+      },
+      "score_per_node": {
+        "samples": 5000,
+        "mean_us": 0.19,
+        "std_us": 0.21,
+        "min_us": 0.15,
+        "p50_us": 0.17,
+        "p90_us": 0.21,
+        "p95_us": 0.25,
+        "p99_us": 0.42,
+        "max_us": 11.72
+      },
+      "normalize_score": {
+        "samples": 5000,
+        "mean_us": 0.22,
+        "std_us": 0.38,
+        "min_us": 0.19,
+        "p50_us": 0.19,
+        "p90_us": 0.25,
+        "p95_us": 0.26,
+        "p99_us": 0.28,
+        "max_us": 20.82
+      },
+      "plugin_total_mean_us": 15,
+      "plugin_total_p99_us": 39.14
+    },
+    {
+      "nodes": 5,
+      "prescore": {
+        "samples": 5000,
+        "mean_us": 20.92,
+        "std_us": 17.91,
+        "min_us": 11.76,
+        "p50_us": 20.82,
+        "p90_us": 24.47,
+        "p95_us": 28.99,
+        "p99_us": 61.44,
+        "max_us": 1006.5
+      },
+      "score_per_node": {
+        "samples": 5000,
+        "mean_us": 0.18,
+        "std_us": 0.04,
+        "min_us": 0.17,
+        "p50_us": 0.17,
+        "p90_us": 0.19,
+        "p95_us": 0.23,
+        "p99_us": 0.37,
+        "max_us": 0.66
+      },
+      "normalize_score": {
+        "samples": 5000,
+        "mean_us": 0.21,
+        "std_us": 0.66,
+        "min_us": 0.19,
+        "p50_us": 0.2,
+        "p90_us": 0.2,
+        "p95_us": 0.2,
+        "p99_us": 0.25,
+        "max_us": 44.5
+      },
+      "plugin_total_mean_us": 22.03,
+      "plugin_total_p99_us": 63.54
+    },
+    {
+      "nodes": 10,
+      "prescore": {
+        "samples": 5000,
+        "mean_us": 27.14,
+        "std_us": 12.15,
+        "min_us": 19.89,
+        "p50_us": 23.01,
+        "p90_us": 39.37,
+        "p95_us": 41.8,
+        "p99_us": 59.3,
+        "max_us": 418.24
+      },
+      "score_per_node": {
+        "samples": 5000,
+        "mean_us": 0.17,
+        "std_us": 0.05,
+        "min_us": 0.15,
+        "p50_us": 0.16,
+        "p90_us": 0.21,
+        "p95_us": 0.22,
+        "p99_us": 0.34,
+        "max_us": 2.08
+      },
+      "normalize_score": {
+        "samples": 5000,
+        "mean_us": 0.19,
+        "std_us": 0.15,
+        "min_us": 0.18,
+        "p50_us": 0.18,
+        "p90_us": 0.19,
+        "p95_us": 0.19,
+        "p99_us": 0.19,
+        "max_us": 10.06
+      },
+      "plugin_total_mean_us": 29.03,
+      "plugin_total_p99_us": 62.89
+    },
+    {
+      "nodes": 20,
+      "prescore": {
+        "samples": 5000,
+        "mean_us": 50.24,
+        "std_us": 26.4,
+        "min_us": 39.75,
+        "p50_us": 46.34,
+        "p90_us": 60.75,
+        "p95_us": 73.28,
+        "p99_us": 107.49,
+        "max_us": 1484.06
+      },
+      "score_per_node": {
+        "samples": 5000,
+        "mean_us": 0.2,
+        "std_us": 0.06,
+        "min_us": 0.16,
+        "p50_us": 0.18,
+        "p90_us": 0.24,
+        "p95_us": 0.27,
+        "p99_us": 0.39,
+        "max_us": 1.33
+      },
+      "normalize_score": {
+        "samples": 5000,
+        "mean_us": 0.24,
+        "std_us": 0.42,
+        "min_us": 0.23,
+        "p50_us": 0.23,
+        "p90_us": 0.24,
+        "p95_us": 0.24,
+        "p99_us": 0.24,
+        "max_us": 27.89
+      },
+      "plugin_total_mean_us": 54.48,
+      "plugin_total_p99_us": 115.53
+    },
+    {
+      "nodes": 50,
+      "prescore": {
+        "samples": 5000,
+        "mean_us": 115.83,
+        "std_us": 60.96,
+        "min_us": 95.71,
+        "p50_us": 109.45,
+        "p90_us": 134.67,
+        "p95_us": 154.77,
+        "p99_us": 206.74,
+        "max_us": 2811.22
+      },
+      "score_per_node": {
+        "samples": 5000,
+        "mean_us": 0.16,
+        "std_us": 0.02,
+        "min_us": 0.15,
+        "p50_us": 0.16,
+        "p90_us": 0.17,
+        "p95_us": 0.19,
+        "p99_us": 0.28,
+        "max_us": 0.45
+      },
+      "normalize_score": {
+        "samples": 5000,
+        "mean_us": 0.31,
+        "std_us": 0.4,
+        "min_us": 0.29,
+        "p50_us": 0.3,
+        "p90_us": 0.3,
+        "p95_us": 0.3,
+        "p99_us": 0.31,
+        "max_us": 28.37
+      },
+      "plugin_total_mean_us": 124.14,
+      "plugin_total_p99_us": 221.05
+    }
+  ],
+  "acceptance": {
+    "budget_ms": 5,
+    "carbon_fallbacks_observed": 0,
+    "criterion": "carbon-aware scheduling overhead \u003c 5 ms per pod at 20 nodes",
+    "overhead_mean_ms": 0.08,
+    "overhead_p50_ms": 0.07,
+    "overhead_p99_ms": 0.171,
+    "pass": true,
+    "worst_of_mean_ci_p50_p99": 0.171
+  },
+  "load_50_pods_per_sec": {
+    "carbon-aware-scheduler": {
+      "bound": 1500,
+      "bound_pods_per_sec": 50.03,
+      "create_to_bind": {
+        "max_us": 11570.75,
+        "mean_us": 2639.66,
+        "min_us": 1804.16,
+        "p50_us": 2268.3,
+        "p90_us": 3184.73,
+        "p95_us": 4788.72,
+        "p99_us": 8441.06,
+        "samples": 1500,
+        "std_us": 1138.33
+      },
+      "goroutines_end": 12,
+      "goroutines_start": 184,
+      "heap_objects_after_gc_mib": 4.91,
+      "heap_objects_baseline_mib": 5.81,
+      "heap_objects_mean_mib": 26.52,
+      "heap_objects_peak_mib": 55.55,
+      "nodes": 20,
+      "process_cpu_cores_avg": 0.381,
+      "process_cpu_seconds": 11.437,
+      "process_rss_peak_mib": 107.52,
+      "profile": "carbon-aware-scheduler",
+      "selected_zone_share": {
+        "central": 0.299,
+        "north": 0.701
+      },
+      "submit_duration_sec": 29.98,
+      "submitted": 1500,
+      "target_pods_per_sec": 50
+    },
+    "carbon-only-scheduler": {
+      "bound": 1500,
+      "bound_pods_per_sec": 50.03,
+      "create_to_bind": {
+        "max_us": 10929.33,
+        "mean_us": 2422.54,
+        "min_us": 1610.8,
+        "p50_us": 2112.62,
+        "p90_us": 3027.02,
+        "p95_us": 4210.09,
+        "p99_us": 6664.77,
+        "samples": 1500,
+        "std_us": 936.12
+      },
+      "goroutines_end": 12,
+      "goroutines_start": 184,
+      "heap_objects_after_gc_mib": 4.87,
+      "heap_objects_baseline_mib": 5.72,
+      "heap_objects_mean_mib": 26.14,
+      "heap_objects_peak_mib": 56.28,
+      "nodes": 20,
+      "process_cpu_cores_avg": 0.366,
+      "process_cpu_seconds": 10.98,
+      "process_rss_peak_mib": 108.69,
+      "profile": "carbon-only-scheduler",
+      "selected_zone_share": {
+        "central": 0.299,
+        "north": 0.701
+      },
+      "submit_duration_sec": 29.98,
+      "submitted": 1500,
+      "target_pods_per_sec": 50
+    },
+    "default-scheduler": {
+      "bound": 1500,
+      "bound_pods_per_sec": 50.03,
+      "create_to_bind": {
+        "max_us": 70414.87,
+        "mean_us": 2486.51,
+        "min_us": 1670.82,
+        "p50_us": 2138.34,
+        "p90_us": 2986.92,
+        "p95_us": 4298.99,
+        "p99_us": 6879.95,
+        "samples": 1500,
+        "std_us": 2009.57
+      },
+      "goroutines_end": 12,
+      "goroutines_start": 184,
+      "heap_objects_after_gc_mib": 4.79,
+      "heap_objects_baseline_mib": 5.85,
+      "heap_objects_mean_mib": 26.82,
+      "heap_objects_peak_mib": 56.9,
+      "nodes": 20,
+      "process_cpu_cores_avg": 0.371,
+      "process_cpu_seconds": 11.157,
+      "process_rss_peak_mib": 109.7,
+      "profile": "default-scheduler",
+      "selected_zone_share": {
+        "central": 0.349,
+        "north": 0.352,
+        "west": 0.299
+      },
+      "submit_duration_sec": 29.98,
+      "submitted": 1500,
+      "target_pods_per_sec": 50
+    }
+  },
+  "heap_stability": {
+    "profile": "carbon-aware-scheduler",
+    "nodes": 50,
+    "checkpoints": [
+      {
+        "cycles": 0,
+        "heap_objects_after_gc_mib": 12.365,
+        "goroutines": 913
+      },
+      {
+        "cycles": 5000,
+        "heap_objects_after_gc_mib": 12.366,
+        "goroutines": 913
+      },
+      {
+        "cycles": 10000,
+        "heap_objects_after_gc_mib": 12.366,
+        "goroutines": 913
+      },
+      {
+        "cycles": 15000,
+        "heap_objects_after_gc_mib": 12.368,
+        "goroutines": 913
+      },
+      {
+        "cycles": 20000,
+        "heap_objects_after_gc_mib": 12.369,
+        "goroutines": 913
+      },
+      {
+        "cycles": 25000,
+        "heap_objects_after_gc_mib": 12.371,
+        "goroutines": 913
+      },
+      {
+        "cycles": 30000,
+        "heap_objects_after_gc_mib": 12.373,
+        "goroutines": 913
+      }
+    ],
+    "slope_kib_per_10k_cycles": 2.98,
+    "growth_first_to_last_kib": 7.17
+  }
+}

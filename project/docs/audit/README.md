@@ -21,6 +21,7 @@
 | [gate_6_k8s_integration_report.md](gate_6_k8s_integration_report.md) | Quality Gate 6: kind + CDS + custom scheduler, Binding Pod на north, вердикт PASS, Stage 7 и Stage 8 UNLOCKED |
 | [gate_7_monitoring_validation.md](gate_7_monitoring_validation.md) | Quality Gate 7: метрики плагина и CDS, Prometheus (2 с) и Grafana, 5×50 Pod, счётчик решений = 50, задержка < 3 с, вердикт PASS |
 | [gate_8_testing_audit.md](gate_8_testing_audit.md) | Quality Gate 8: integration, E2E и chaos-сьюты, 5 из 5 прогонов зелёные, вердикт PASS, Stage 9 UNLOCKED |
+| [gate_9_performance_scalability_report.md](gate_9_performance_scalability_report.md) | Quality Gate 9: задержки 3–50 нод, overhead 0,08 мс при 20 нодах, pprof, O(N), исправлены O(F²) и аллокация в Score, вердикт PASS, Stage 10 UNLOCKED |
 | [T4.1-carbon-service-skeleton.md](T4.1-carbon-service-skeleton.md) | T4.1: каркас `cmd/carbon-service`, конфиг YAML+env, stubs provider/cache/api; эстафета T4.2 |
 | [T4.2-carbon-providers.md](T4.2-carbon-providers.md) | T4.2: Electricity Maps live-клиент, Replay Engine, фабрика `NewProvider`; эстафета T4.3 |
 | [T4.3-cds-cache-rest.md](T4.3-cds-cache-rest.md) | T4.3: in-memory кэш (`atomic.Pointer`), REST CDS, бенчмарк Get ~155 ns/op; эстафета T4.4 |

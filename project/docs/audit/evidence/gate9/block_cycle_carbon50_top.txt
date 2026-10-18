@@ -1,0 +1,33 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: delay
+Time: 2026-10-18 23:16:50 UTC
+Showing nodes accounting for 74.82s, 100% of 74.85s total
+Dropped 194 nodes (cum <= 0.37s)
+Showing top 25 nodes out of 36
+      flat  flat%   sum%        cum   cum%
+    50.16s 67.01% 67.01%     50.16s 67.01%  runtime.selectgo
+    21.42s 28.62% 95.63%     21.42s 28.62%  runtime.chanrecv1
+     3.25s  4.34%   100%      3.25s  4.34%  sync.(*WaitGroup).Wait
+         0     0%   100%      3.24s  4.33%  carbon-aware-k8s/benchmarks_test.(*schedEnv).cycle
+         0     0%   100%     10.70s 14.30%  carbon-aware-k8s/benchmarks_test.BenchmarkScheduleCycle
+         0     0%   100%      3.35s  4.47%  carbon-aware-k8s/benchmarks_test.BenchmarkScheduleCycle.func1
+         0     0%   100%        10s 13.36%  k8s.io/apimachinery/pkg/util/wait.BackoffUntil
+         0     0%   100%     10.01s 13.37%  k8s.io/apimachinery/pkg/util/wait.BackoffUntilWithContext
+         0     0%   100%        10s 13.36%  k8s.io/apimachinery/pkg/util/wait.JitterUntil
+         0     0%   100%        10s 13.36%  k8s.io/apimachinery/pkg/util/wait.Until
+         0     0%   100%      3.24s  4.33%  k8s.io/client-go/util/workqueue.ParallelizeUntil
+         0     0%   100%      1.16s  1.54%  k8s.io/kubernetes/pkg/scheduler.(*Scheduler).findNodesThatFitPod
+         0     0%   100%      1.16s  1.54%  k8s.io/kubernetes/pkg/scheduler.(*Scheduler).findNodesThatPassFilters
+         0     0%   100%      3.24s  4.33%  k8s.io/kubernetes/pkg/scheduler.(*Scheduler).schedulePod
+         0     0%   100%      3.24s  4.33%  k8s.io/kubernetes/pkg/scheduler.(*Scheduler).schedulePod-fm
+         0     0%   100%      2.09s  2.79%  k8s.io/kubernetes/pkg/scheduler.prioritizeNodes
+         0     0%   100%      3.24s  4.33%  k8s.io/kubernetes/pkg/scheduler/framework/parallelize.(*Parallelizer).Until
+         0     0%   100%      3.24s  4.33%  k8s.io/kubernetes/pkg/scheduler/framework/parallelize.Parallelizer.Until
+         0     0%   100%      2.09s  2.79%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).RunScorePlugins
+         0     0%   100%      0.57s  0.76%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).normalizeScores
+         0     0%   100%        40s 53.45%  k8s.io/kubernetes/pkg/scheduler/metrics.(*MetricAsyncRecorder).run
+         0     0%   100%        40s 53.45%  k8s.io/kubernetes/pkg/scheduler/metrics.NewMetricsAsyncRecorder.gowrap1
+         0     0%   100%     10.72s 14.32%  main.main
+         0     0%   100%     10.72s 14.32%  runtime.main
+         0     0%   100%     21.41s 28.60%  testing.(*B).Run

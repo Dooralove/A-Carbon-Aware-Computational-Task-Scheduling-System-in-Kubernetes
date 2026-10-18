@@ -1,0 +1,5 @@
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=0-4         	   41284	     26690 ns/op	    5847 B/op	      21 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=12-4        	   13952	     84091 ns/op	    5835 B/op	      21 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=48-4        	    1964	    600522 ns/op	    5819 B/op	      21 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=144-4       	     242	   4786947 ns/op	    5823 B/op	      21 allocs/op
+BenchmarkSchedulePreScoreForecast/nodes=20/intervals=288-4       	      70	  17896983 ns/op	    5829 B/op	      21 allocs/op

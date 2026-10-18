@@ -98,3 +98,29 @@ func BenchmarkPreScore20(b *testing.B) {
 		}
 	}
 }
+
+// TestScoreAndNormalizeZeroAlloc is the Gate 9 check: the per-node hot paths
+// must not touch the heap (a Success status is the nil *Status).
+func TestScoreAndNormalizeZeroAlloc(t *testing.T) {
+	p, state, nodes := scoreBenchEnv(t, 20)
+	ctx := context.Background()
+	ni := nodes[3]
+	if allocs := testing.AllocsPerRun(1000, func() {
+		if _, st := p.Score(ctx, state, nil, ni); !st.IsSuccess() {
+			t.Fatal(st)
+		}
+	}); allocs != 0 {
+		t.Fatalf("Score allocates %.1f objects per call", allocs)
+	}
+	scores := make(fwk.NodeScoreList, len(nodes))
+	for i, n := range nodes {
+		scores[i] = fwk.NodeScore{Name: n.Node().Name, Score: 5000}
+	}
+	if allocs := testing.AllocsPerRun(1000, func() {
+		if st := p.NormalizeScore(ctx, state, nil, scores); !st.IsSuccess() {
+			t.Fatal(st)
+		}
+	}); allocs != 0 {
+		t.Fatalf("NormalizeScore allocates %.1f objects per call", allocs)
+	}
+}

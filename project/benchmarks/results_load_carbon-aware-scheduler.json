@@ -1,0 +1,33 @@
+{
+  "profile": "carbon-aware-scheduler",
+  "nodes": 20,
+  "target_pods_per_sec": 50,
+  "submit_duration_sec": 29.98,
+  "submitted": 1500,
+  "bound": 1500,
+  "bound_pods_per_sec": 50.03,
+  "create_to_bind": {
+    "samples": 1500,
+    "mean_us": 2639.66,
+    "std_us": 1138.33,
+    "min_us": 1804.16,
+    "p50_us": 2268.3,
+    "p90_us": 3184.73,
+    "p95_us": 4788.72,
+    "p99_us": 8441.06,
+    "max_us": 11570.75
+  },
+  "process_cpu_seconds": 11.437,
+  "process_cpu_cores_avg": 0.381,
+  "heap_objects_baseline_mib": 5.81,
+  "heap_objects_peak_mib": 55.55,
+  "heap_objects_mean_mib": 26.52,
+  "heap_objects_after_gc_mib": 4.91,
+  "process_rss_peak_mib": 107.52,
+  "goroutines_start": 184,
+  "goroutines_end": 12,
+  "selected_zone_share": {
+    "central": 0.299,
+    "north": 0.701
+  }
+}

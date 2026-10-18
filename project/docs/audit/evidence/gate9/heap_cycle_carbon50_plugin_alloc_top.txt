@@ -1,0 +1,38 @@
+File: bench.test
+Build ID: eac9ae4905023d90e2407306dda944682f1ee2a7
+Type: alloc_space
+Time: 2026-10-18 23:16:50 UTC
+Active filters:
+   focus=carbon-aware-k8s/pkg/
+Showing nodes accounting for 218.61MB, 11.01% of 1986.30MB total
+Dropped 152 nodes (cum <= 9.93MB)
+      flat  flat%   sum%        cum   cum%
+   92.38MB  4.65%  4.65%    94.74MB  4.77%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).evaluateNodes
+   80.71MB  4.06%  8.71%    82.98MB  4.18%  carbon-aware-k8s/pkg/scheduler.writeDecisionWorks
+   38.44MB  1.94% 10.65%    38.44MB  1.94%  carbon-aware-k8s/pkg/scheduler.assembleCycleState
+    2.30MB  0.12% 10.77%     2.30MB  0.12%  regexp.(*bitState).reset
+    2.07MB   0.1% 10.87%     2.07MB   0.1%  internal/sync.newEntryNode[go.shape.interface {},go.shape.interface {}] (inline)
+       2MB   0.1% 10.97%        2MB   0.1%  internal/sync.newIndirectNode[go.shape.interface {},go.shape.interface {}] (inline)
+    0.55MB 0.028% 11.00%     4.60MB  0.23%  k8s.io/kubernetes/pkg/scheduler/framework.(*CycleState).Write
+    0.16MB 0.0081% 11.01%     2.49MB  0.13%  carbon-aware-k8s/pkg/scheduler.writeCycleState (inline)
+         0     0% 11.01%     2.35MB  0.12%  carbon-aware-k8s/api/v1alpha1.ParseNodeEnergyIdentity
+         0     0% 11.01%     2.50MB  0.13%  carbon-aware-k8s/api/v1alpha1.ZoneID.Validate
+         0     0% 11.01%      219MB 11.03%  carbon-aware-k8s/benchmarks_test.(*schedEnv).cycle
+         0     0% 11.01%   219.10MB 11.03%  carbon-aware-k8s/benchmarks_test.BenchmarkScheduleCycle.func1
+         0     0% 11.01%      219MB 11.03%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).PreScore
+         0     0% 11.01%     2.35MB  0.12%  carbon-aware-k8s/pkg/scheduler.(*CarbonAwarePlugin).evaluateOne
+         0     0% 11.01%     4.06MB   0.2%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Store (inline)
+         0     0% 11.01%     4.06MB   0.2%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).Swap
+         0     0% 11.01%        2MB   0.1%  internal/sync.(*HashTrieMap[go.shape.interface {},go.shape.interface {}]).expand
+         0     0% 11.01%      219MB 11.03%  k8s.io/kubernetes/pkg/scheduler.(*Scheduler).schedulePod
+         0     0% 11.01%      219MB 11.03%  k8s.io/kubernetes/pkg/scheduler.prioritizeNodes
+         0     0% 11.01%      219MB 11.03%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).RunPreScorePlugins
+         0     0% 11.01%      219MB 11.03%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*frameworkImpl).runPreScorePlugin
+         0     0% 11.01%      219MB 11.03%  k8s.io/kubernetes/pkg/scheduler/framework/runtime.(*instrumentedPreScorePlugin).PreScore
+         0     0% 11.01%     2.50MB  0.13%  regexp.(*Regexp).MatchString (inline)
+         0     0% 11.01%     2.50MB  0.13%  regexp.(*Regexp).backtrack
+         0     0% 11.01%     2.50MB  0.13%  regexp.(*Regexp).doExecute
+         0     0% 11.01%     2.50MB  0.13%  regexp.(*Regexp).doMatch (inline)
+         0     0% 11.01%     4.06MB   0.2%  sync.(*Map).Store (inline)
+         0     0% 11.01%   218.97MB 11.02%  testing.(*B).launch
+         0     0% 11.01%   219.10MB 11.03%  testing.(*B).runN
