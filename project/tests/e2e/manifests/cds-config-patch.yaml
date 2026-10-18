@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: carbon-data-service
+  namespace: carbon-aware
+data:
+  config.yaml: |
+    port: 8080
+    cacheTTL: 2s
+    httpTimeout: 2s
+    providerType: replay
+    liveApiKey: ""
+    replayDatasetPath: /data/e2e/e2e_baseline.json
+    replayLoop: linear
+    replayLookup: step

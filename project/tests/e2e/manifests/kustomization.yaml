@@ -1,0 +1,51 @@
+# E2E overlay of the runtime stack (T8.2/T8.3). Apply after `make kind-up`
+# and `make kind-load`:
+#   kubectl apply -k tests/e2e/manifests
+#
+# Differences from deployments/kubernetes (and only these):
+#   - CDS serves deterministic replay datasets from ConfigMap carbon-e2e-datasets
+#     (baseline: north=100, west=400; spike: north=900, west=100) and refreshes every 2s;
+#   - scheduler thresholds are scaled 10x down so chaos runs fit in minutes:
+#     refresh 2s, staleWarn 10s, maxDataAge 30s, httpTimeout 1s (canon 30/90/300/2).
+#     The tests read these values from the ConfigMap, so restoring the canon
+#     only means editing scheduler-config-patch.yaml;
+#   - kube-scheduler allows anonymous GET /metrics so tests can read
+#     carbon_aware_* counters through the API server pod proxy.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../../deployments/kubernetes
+configMapGenerator:
+  - name: carbon-e2e-datasets
+    namespace: carbon-aware
+    options:
+      disableNameSuffixHash: true
+    files:
+      - datasets/e2e_baseline.json
+      - datasets/e2e_spike.json
+patches:
+  - path: cds-config-patch.yaml
+  - path: scheduler-config-patch.yaml
+  - target:
+      kind: Deployment
+      name: carbon-data-service
+    patch: |-
+      - op: add
+        path: /spec/template/spec/volumes/-
+        value:
+          name: e2e-datasets
+          configMap:
+            name: carbon-e2e-datasets
+      - op: add
+        path: /spec/template/spec/containers/0/volumeMounts/-
+        value:
+          name: e2e-datasets
+          mountPath: /data/e2e
+          readOnly: true
+  - target:
+      kind: Deployment
+      name: carbon-aware-scheduler
+    patch: |-
+      - op: add
+        path: /spec/template/spec/containers/0/args/-
+        value: --authorization-always-allow-paths=/healthz,/readyz,/livez,/metrics
