@@ -1,6 +1,6 @@
 # Метрики runtime и экспериментальные KPI
 
-- **Версия:** 1.0.0
+- **Версия:** 1.1.0 (аддитивная поправка Stage 7, [ADR-003](../decisions_adr/003_stage7_observability_metrics.md); имена v1.0.0 не менялись)
 - **Статус:** accepted (LOCKED) — **имена и смысл**; JSON дашбордов Grafana — реализация `deployments/grafana/`
 - **Дата утверждения:** 2026-09-04
 - **Владелец:** Lead System Architect
@@ -46,6 +46,18 @@
 
 `scoring_mode` совпадает с `pluginConfig.args.scoringMode`.
 
+### 2a. Метрики Stage 7 (v1.1.0, ADR-003)
+
+Реализация — `pkg/metrics/prometheus.go`; регистрация в legacy-registry kube-scheduler, тот же `/metrics` на secure-порту 10259.
+
+| Имя | Тип | Лейблы | Единица | Смысл |
+| --- | --- | --- | --- | --- |
+| `carbon_aware_pod_estimated_carbon_gco2` | histogram | `zone`, `scoring_mode` | gCO2e | \(\widehat{CF}(p,n^{*})\) Pod'а на **выбранном** узле, пишется в `PostBind`; только `expected-cf` на fresh/stale данных |
+| `carbon_aware_pod_estimated_energy_kwh` | gauge | `zone`, `scoring_mode` | kWh | \(\widehat{P}_{\mathrm{pod}}\cdot\hat T\) последнего Pod'а, привязанного в зоне |
+| `carbon_aware_scheduler_decisions_total` | counter | `zone`, `node`, `scoring_mode` | 1 | успешные Binding профиля CarbonAware (`PostBind`), включая G-08 и opt-out; зона `unknown`, если не определена |
+| `carbon_aware_scheduler_fallback_total` | counter | `reason`=`empty`\|`dead`\|`all_invalid`\|`stale` | 1 | деградированные попытки скоринга: G-08 (`empty`/`dead`/`all_invalid`) и SM-STALE (`stale`); opt-out не считается |
+| `carbon_aware_plugin_duration_seconds` | histogram | `extension_point`=`PreScore`\|`Score`\|`NormalizeScore`\|`PostBind` | s | собственная длительность вызова точки расширения; бакеты 100 ns … 0.42 s |
+
 ---
 
 ## 3. Carbon Data Service
@@ -57,6 +69,14 @@
 | `carbon_aware_cds_provider_error_total` | counter | `provider`, `kind` | 1 | FP-01/FP-02; `kind`=`timeout`\|`http`\|`parse`\|`invalid` |
 | `carbon_aware_cds_replay_model_time_seconds` | gauge | — | s | Unix UTC \(t_{\mathrm{model}}\) в replay; в live/mock не экспортировать |
 | `carbon_aware_cds_quality` | gauge | `quality`=`fresh`\|`stale` | 1 | 1 на текущем качестве снимка, 0 на остальных |
+
+### 3a. Метрики Stage 7 (v1.1.0, ADR-003)
+
+| Имя | Тип | Лейблы | Единица | Смысл |
+| --- | --- | --- | --- | --- |
+| `carbon_aware_zone_intensity_gco2_kwh` | gauge | `zone` | gCO2e/kWh | текущая CI зоны в опубликованном снимке CDS; невалидные записи не экспортируются |
+| `carbon_aware_data_age_seconds` | gauge | — | s | \(t_{\mathrm{now}}-t_{\mathrm{fetchedAt}}\) снимка CDS (= `dataAgeSeconds` в `/healthz`); не экспортируется, пока кэш пуст |
+| `carbon_aware_api_requests_total` | counter | `endpoint` (шаблон маршрута), `code` | 1 | HTTP-запросы к CDS |
 
 Порт scrape — тот же listener **8080**, путь `/metrics` (не часть OpenAPI JSON).
 

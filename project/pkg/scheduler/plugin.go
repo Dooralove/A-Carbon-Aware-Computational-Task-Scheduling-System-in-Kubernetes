@@ -16,12 +16,14 @@ import (
 // Name is the Scheduler Framework plugin name registered in KubeSchedulerConfiguration.
 const Name = v1alpha1.CarbonAwarePluginName
 
-// Compile-time contract: CarbonAware is only a scoring plugin (ARCH-04, SCOPE-OUT-16).
+// Compile-time contract: CarbonAware is a scoring plugin (ARCH-04, SCOPE-OUT-16).
+// PostBind only records decision metrics (ADR-003); it never affects placement.
 var (
 	_ fwk.Plugin          = (*CarbonAwarePlugin)(nil)
 	_ fwk.PreScorePlugin  = (*CarbonAwarePlugin)(nil)
 	_ fwk.ScorePlugin     = (*CarbonAwarePlugin)(nil)
 	_ fwk.ScoreExtensions = (*CarbonAwarePlugin)(nil)
+	_ fwk.PostBindPlugin  = (*CarbonAwarePlugin)(nil)
 )
 
 // CarbonAwarePlugin ranks feasible nodes by expected carbon footprint.

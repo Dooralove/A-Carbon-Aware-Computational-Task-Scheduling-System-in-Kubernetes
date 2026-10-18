@@ -12,6 +12,7 @@ import (
 	"carbon-aware-k8s/api/v1alpha1"
 	pkgcarbon "carbon-aware-k8s/pkg/carbon"
 	"carbon-aware-k8s/pkg/energy"
+	"carbon-aware-k8s/pkg/metrics"
 	wlruntime "carbon-aware-k8s/pkg/runtime"
 )
 
@@ -28,6 +29,7 @@ type nodeWork struct {
 	zone        string
 	mark        nodeMark
 	cfGCO2e     float64
+	energyKWh   float64
 	ci          float64
 	sR          float64
 	sP          float64
@@ -39,7 +41,11 @@ type nodeWork struct {
 // Order: parse → opt-in → Ť / SLA → one snapshot.Load → G-08 or (2.19)/(2.23).
 func (p *CarbonAwarePlugin) PreScore(ctx context.Context, state fwk.CycleState, pod *v1.Pod, nodes []fwk.NodeInfo) *fwk.Status {
 	start := time.Now()
-	defer func() { recordPreScoreDuration(time.Since(start).Seconds()) }()
+	defer func() {
+		d := time.Since(start)
+		recordPreScoreDuration(d.Seconds())
+		metrics.ObservePluginDuration(metrics.PointPreScore, d)
+	}()
 
 	profile, err := workloadFromPod(pod)
 	if err != nil {
@@ -50,6 +56,7 @@ func (p *CarbonAwarePlugin) PreScore(ctx context.Context, state fwk.CycleState, 
 	if !profile.Enabled {
 		recordOptOut()
 		writeNeutralAll(state, nodes, pod, v1alpha1.FallbackOptOut, p.args.ScoringMode, true, false)
+		writeDecisionZones(state, nodes, p.args.ScoringMode)
 		return statusSuccess()
 	}
 
@@ -71,6 +78,7 @@ func (p *CarbonAwarePlugin) PreScore(ctx context.Context, state fwk.CycleState, 
 	if mode == v1alpha1.FallbackEmpty || mode == v1alpha1.FallbackDead {
 		recordFallback(reason)
 		writeNeutralAll(state, nodes, pod, mode, p.args.ScoringMode, false, true)
+		writeDecisionZones(state, nodes, p.args.ScoringMode)
 		return statusSuccess()
 	}
 
@@ -97,6 +105,7 @@ func (p *CarbonAwarePlugin) PreScore(ctx context.Context, state fwk.CycleState, 
 	if scoredOK == 0 {
 		recordFallback("all_invalid")
 		writeNeutralAll(state, nodes, pod, v1alpha1.FallbackAllInvalid, p.args.ScoringMode, false, true)
+		writeDecisionZones(state, nodes, p.args.ScoringMode)
 		return statusSuccess()
 	}
 
@@ -108,6 +117,7 @@ func (p *CarbonAwarePlugin) PreScore(ctx context.Context, state fwk.CycleState, 
 		payload.DataStale = true
 	}
 	writeCycleState(state, payload)
+	writeDecisionWorks(state, works, p.args.ScoringMode)
 	recordUnknownZoneNodes(missing)
 	return statusSuccess()
 }
@@ -299,6 +309,7 @@ func (p *CarbonAwarePlugin) evaluateOne(
 		return w
 	}
 	w.cfGCO2e = cf
+	w.energyKWh = energyKWh(pPod, hatT)
 	return w
 }
 

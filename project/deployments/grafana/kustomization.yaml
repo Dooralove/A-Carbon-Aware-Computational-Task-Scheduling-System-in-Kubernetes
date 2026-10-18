@@ -1,0 +1,18 @@
+# Grafana: kubectl apply -k deployments/grafana (after deployments/prometheus,
+# which creates the monitoring namespace).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: monitoring
+resources:
+  - grafana-deployment.yaml
+configMapGenerator:
+  - name: grafana-dashboards
+    files:
+      - dashboards/carbon_overview.json
+    options:
+      # Fixed name so the Deployment volume reference stays readable; Grafana
+      # re-reads the files every 30 s, no restart needed after an update.
+      disableNameSuffixHash: true
+      labels:
+        app.kubernetes.io/name: grafana
+        app.kubernetes.io/part-of: carbon-aware-k8s

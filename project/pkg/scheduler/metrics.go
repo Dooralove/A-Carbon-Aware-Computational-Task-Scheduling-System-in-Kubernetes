@@ -5,6 +5,8 @@ import (
 
 	"github.com/prometheus/client_golang/prometheus"
 	"k8s.io/component-base/metrics/legacyregistry"
+
+	"carbon-aware-k8s/pkg/metrics"
 )
 
 var registerCacheMetricsOnce sync.Once
@@ -83,6 +85,8 @@ func registerCacheMetrics() {
 			carbonAwarePreScoreDurationSeconds,
 			carbonAwareEstimatedCFGCO2e,
 		)
+		// Stage 7 metrics (metrics.md §2a, ADR-003) share the same /metrics endpoint.
+		legacyregistry.RawMustRegister(metrics.SchedulerCollectors()...)
 	})
 }
 
@@ -117,11 +121,13 @@ func recordScoringAttempt(mode string) {
 func recordFallback(reason string) {
 	registerCacheMetrics()
 	carbonAwareFallbackTotal.WithLabelValues(reason).Inc()
+	metrics.RecordFallback(reason)
 }
 
 func recordStaleInWindow() {
 	registerCacheMetrics()
 	carbonAwareStaleInWindowTotal.Inc()
+	metrics.RecordFallback(metrics.FallbackReasonStale)
 }
 
 func recordOptOut() {

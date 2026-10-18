@@ -254,6 +254,27 @@ func TestHealthAliasAndMetricsAfterRefresh(t *testing.T) {
 	}
 }
 
+func TestMetricsExposeStage7Families(t *testing.T) {
+	srv := seededServer(t)
+	for i := 0; i < 2; i++ {
+		rec := httptest.NewRecorder()
+		srv.Handler().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, v1alpha1.PathZones, nil))
+	}
+	rec := httptest.NewRecorder()
+	srv.Handler().ServeHTTP(rec, httptest.NewRequest(http.MethodGet, v1alpha1.PathMetrics, nil))
+	body := rec.Body.String()
+	for _, want := range []string{
+		`carbon_aware_api_requests_total{code="200",endpoint="/api/v1/zones"} 2`,
+		`carbon_aware_zone_intensity_gco2_kwh{zone="north"}`,
+		`carbon_aware_data_age_seconds `,
+		"carbon_aware_cds_zones 3",
+	} {
+		if !strings.Contains(body, want) {
+			t.Errorf("missing %q in:\n%s", want, body)
+		}
+	}
+}
+
 func TestStaleLastGoodStill200(t *testing.T) {
 	now := time.Date(2026, 9, 1, 10, 0, 0, 0, time.UTC)
 	clock := v1alpha1.NewFakeClock(now)

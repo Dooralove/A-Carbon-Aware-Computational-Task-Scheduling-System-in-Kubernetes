@@ -1,0 +1,197 @@
+{
+  "pods_submitted": 50,
+  "pods_bound": 50,
+  "decisions_before": 350.0,
+  "decisions_after": 400.0,
+  "decisions_increase": 50.0,
+  "bound_by_node": {
+    "carbon-aware-worker2": 26,
+    "carbon-aware-worker": 24
+  },
+  "decisions_by_node_after": {
+    "carbon-aware-worker": 198.0,
+    "carbon-aware-worker2": 202.0
+  },
+  "targets": [
+    {
+      "job": "cadvisor",
+      "scheduler": "",
+      "node": "carbon-aware-control-plane",
+      "health": "up"
+    },
+    {
+      "job": "cadvisor",
+      "scheduler": "",
+      "node": "carbon-aware-worker",
+      "health": "up"
+    },
+    {
+      "job": "cadvisor",
+      "scheduler": "",
+      "node": "carbon-aware-worker2",
+      "health": "up"
+    },
+    {
+      "job": "cadvisor",
+      "scheduler": "",
+      "node": "carbon-aware-worker3",
+      "health": "up"
+    },
+    {
+      "job": "cadvisor",
+      "scheduler": "",
+      "node": "carbon-aware-worker4",
+      "health": "up"
+    },
+    {
+      "job": "carbon-data-service",
+      "scheduler": "",
+      "node": "",
+      "health": "up"
+    },
+    {
+      "job": "kube-scheduler",
+      "scheduler": "default-scheduler",
+      "node": "",
+      "health": "up"
+    },
+    {
+      "job": "kube-scheduler",
+      "scheduler": "carbon-aware-scheduler",
+      "node": "",
+      "health": "up"
+    },
+    {
+      "job": "node-exporter",
+      "scheduler": "",
+      "node": "carbon-aware-worker2",
+      "health": "up"
+    },
+    {
+      "job": "node-exporter",
+      "scheduler": "",
+      "node": "carbon-aware-control-plane",
+      "health": "up"
+    },
+    {
+      "job": "node-exporter",
+      "scheduler": "",
+      "node": "carbon-aware-worker",
+      "health": "up"
+    },
+    {
+      "job": "node-exporter",
+      "scheduler": "",
+      "node": "carbon-aware-worker3",
+      "health": "up"
+    },
+    {
+      "job": "node-exporter",
+      "scheduler": "",
+      "node": "carbon-aware-worker4",
+      "health": "up"
+    },
+    {
+      "job": "prometheus",
+      "scheduler": "",
+      "node": "",
+      "health": "up"
+    }
+  ],
+  "seconds_submit_to_all_bound": 3.393,
+  "last_bind_time_source": "scheduler klog",
+  "seconds_last_bind_to_prometheus": 2.197,
+  "seconds_last_bind_to_grafana_datasource": 1.94,
+  "panel_queries": [
+    {
+      "panel": "CDS data age",
+      "ref": "A",
+      "series": 1
+    },
+    {
+      "panel": "Plugin snapshot age",
+      "ref": "A",
+      "series": 1
+    },
+    {
+      "panel": "Pods placed by CarbonAware",
+      "ref": "A",
+      "series": 1
+    },
+    {
+      "panel": "Fallbacks (range)",
+      "ref": "A",
+      "series": 1
+    },
+    {
+      "panel": "1. Carbon intensity by zone",
+      "ref": "A",
+      "series": 3
+    },
+    {
+      "panel": "2. Scheduler decisions by zone and node",
+      "ref": "A",
+      "series": 2
+    },
+    {
+      "panel": "3. Estimated cumulative carbon footprint over the range (gCO2e)",
+      "ref": "A",
+      "series": 2
+    },
+    {
+      "panel": "3. Estimated cumulative carbon footprint over the range (gCO2e)",
+      "ref": "B",
+      "series": 1
+    },
+    {
+      "panel": "4. Estimated node power (W)",
+      "ref": "A",
+      "series": 4
+    },
+    {
+      "panel": "4. Estimated node power (W)",
+      "ref": "B",
+      "series": 2
+    },
+    {
+      "panel": "5. Scheduling latency p50 / p95 / p99",
+      "ref": "A",
+      "series": 2
+    },
+    {
+      "panel": "5. Scheduling latency p50 / p95 / p99",
+      "ref": "B",
+      "series": 2
+    },
+    {
+      "panel": "5. Scheduling latency p50 / p95 / p99",
+      "ref": "C",
+      "series": 2
+    },
+    {
+      "panel": "5b. CarbonAware extension point p99",
+      "ref": "A",
+      "series": 4
+    },
+    {
+      "panel": "5b. CarbonAware extension point p99",
+      "ref": "B",
+      "series": 2
+    },
+    {
+      "panel": "6. Fallback events & data freshness",
+      "ref": "A",
+      "series": 4
+    },
+    {
+      "panel": "6. Fallback events & data freshness",
+      "ref": "B",
+      "series": 1
+    },
+    {
+      "panel": "6. Fallback events & data freshness",
+      "ref": "C",
+      "series": 1
+    }
+  ]
+}

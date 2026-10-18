@@ -382,22 +382,24 @@ func waitFor(timeout time.Duration, cond func() bool) (time.Duration, error) {
 }
 
 // counterValue sums a counter family in the scheduler's legacy registry,
-// optionally filtered by one label. Several names can be given so the test
-// tracks the metric through the Stage 7 rename
-// (carbon_aware_fallback_total → carbon_aware_scheduler_fallback_total).
+// optionally filtered by one label. names are tried in order and the first
+// family present is used: Stage 7 added carbon_aware_scheduler_fallback_total
+// next to carbon_aware_fallback_total (metrics.md v1.1.0, ADR-003), and both
+// count the same events, so summing them would double-count.
 func counterValue(t *testing.T, names []string, label, value string) float64 {
 	t.Helper()
 	mfs, err := legacyregistry.DefaultGatherer.Gather()
 	if err != nil {
 		t.Fatalf("gather metrics: %v", err)
 	}
-	want := make(map[string]bool, len(names))
-	for _, n := range names {
-		want[n] = true
+	byName := make(map[string]*dto.MetricFamily, len(mfs))
+	for _, mf := range mfs {
+		byName[mf.GetName()] = mf
 	}
 	var sum float64
-	for _, mf := range mfs {
-		if !want[mf.GetName()] {
+	for _, n := range names {
+		mf, ok := byName[n]
+		if !ok {
 			continue
 		}
 		for _, m := range mf.GetMetric() {
@@ -408,6 +410,7 @@ func counterValue(t *testing.T, names []string, label, value string) float64 {
 				sum += c.GetValue()
 			}
 		}
+		break
 	}
 	return sum
 }
