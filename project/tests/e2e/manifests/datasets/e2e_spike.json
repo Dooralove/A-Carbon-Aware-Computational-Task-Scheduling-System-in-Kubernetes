@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "e2e_spike_v1",
+  "source": "synthetic",
+  "scenario": "stable",
+  "unit": "gCO2e/kWh",
+  "emissionFactorType": "lifecycle",
+  "flowTraced": true,
+  "temporalGranularity": "5_minutes",
+  "intervalSeconds": 300,
+  "timeBase": "model",
+  "modelStart": "2026-09-01T10:00:00Z",
+  "modelEnd": "2026-09-01T10:10:00Z",
+  "forecastMode": "none",
+  "zones": [
+    { "zone": "north" },
+    { "zone": "west" }
+  ],
+  "series": [
+    { "zone": "north", "timestamp": "2026-09-01T10:00:00Z", "carbonIntensity": 900 },
+    { "zone": "west", "timestamp": "2026-09-01T10:00:00Z", "carbonIntensity": 100 },
+    { "zone": "north", "timestamp": "2026-09-01T10:05:00Z", "carbonIntensity": 900 },
+    { "zone": "west", "timestamp": "2026-09-01T10:05:00Z", "carbonIntensity": 100 }
+  ]
+}
