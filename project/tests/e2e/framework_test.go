@@ -193,7 +193,9 @@ type podOpts struct {
 	nodeName  string
 }
 
-func carbonOpts() podOpts { return podOpts{scheduler: carbonScheduler, enabled: ptr.To(true), cpu: "100m"} }
+func carbonOpts() podOpts {
+	return podOpts{scheduler: carbonScheduler, enabled: ptr.To(true), cpu: "100m"}
+}
 
 func newPod(ns, name string, o podOpts) *corev1.Pod {
 	if o.cpu == "" {
