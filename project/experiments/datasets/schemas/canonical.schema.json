@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carbon-aware.io/schemas/canonical.schema.json",
+  "title": "Canonical carbon-intensity types",
+  "description": "Internal types for Carbon Data Service: Zone, Timestamp, CarbonIntensity, ForecastArray, CarbonRecord. Units are always gCO2e/kWh.",
+  "$defs": {
+    "zone": {
+      "title": "Zone",
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 63,
+      "pattern": "^[a-z0-9]([a-z0-9._-]*[a-z0-9])?$",
+      "description": "Logical energy zone. Must match Kubernetes label carbon-aware.io/zone (DNS-1123 label). Not a cloud region."
+    },
+    "timestamp": {
+      "title": "Timestamp",
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC instant, RFC 3339. Interval start is left-closed: value at T covers [T, T+interval)."
+    },
+    "unit": {
+      "type": "string",
+      "const": "gCO2e/kWh",
+      "description": "Canonical unit. gCO2eq/kWh (Electricity Maps) is an alias of gCO2e/kWh. NESO gCO2/kWh is mapped with emission_factor_type=direct and a provenance note; no numeric conversion factor is applied."
+    },
+    "carbonIntensity": {
+      "title": "CarbonIntensity",
+      "type": "number",
+      "minimum": 0,
+      "maximum": 2000,
+      "description": "Grid carbon intensity in gCO2e/kWh. Negative, NaN and +Inf are invalid (DOD-TEST-04)."
+    },
+    "emissionFactorType": {
+      "type": "string",
+      "enum": ["lifecycle", "direct"],
+      "description": "lifecycle = cradle-to-grave (Electricity Maps default). direct = operational stack emissions only (closer to NESO generation-only)."
+    },
+    "temporalGranularity": {
+      "type": "string",
+      "enum": ["5_minutes", "15_minutes", "30_minutes", "60_minutes"],
+      "description": "Width of each observation interval. 5_minutes and 60_minutes are the diploma baselines; 30_minutes exists for NESO ingest."
+    },
+    "dataQuality": {
+      "type": "string",
+      "enum": ["fresh", "stale", "estimated", "invalid", "missing"]
+    },
+    "sourceKind": {
+      "type": "string",
+      "enum": [
+        "electricity-maps",
+        "neso",
+        "historical-dataset",
+        "synthetic",
+        "mock"
+      ]
+    },
+    "forecastPoint": {
+      "title": "ForecastPoint",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["timestamp", "carbonIntensity"],
+      "properties": {
+        "timestamp": { "$ref": "#/$defs/timestamp" },
+        "carbonIntensity": { "$ref": "#/$defs/carbonIntensity" },
+        "horizonSeconds": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "timestamp - issuedAt, in seconds. Replay Engine may recompute from timestamps."
+        }
+      }
+    },
+    "forecastArray": {
+      "title": "ForecastArray",
+      "type": "array",
+      "minItems": 0,
+      "maxItems": 288,
+      "items": { "$ref": "#/$defs/forecastPoint" },
+      "description": "Ordered by timestamp ascending, unique timestamps. Horizon typically 1–24 h. Empty array means persistence model CI(t+Δ)=CI(t) (SCOPE-EDGE-03)."
+    },
+    "carbonRecord": {
+      "title": "CarbonRecord",
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "zone",
+        "timestamp",
+        "carbonIntensity",
+        "unit",
+        "source",
+        "emissionFactorType",
+        "temporalGranularity"
+      ],
+      "properties": {
+        "zone": { "$ref": "#/$defs/zone" },
+        "timestamp": { "$ref": "#/$defs/timestamp" },
+        "carbonIntensity": { "$ref": "#/$defs/carbonIntensity" },
+        "unit": { "$ref": "#/$defs/unit" },
+        "source": { "$ref": "#/$defs/sourceKind" },
+        "sourceZone": {
+          "type": "string",
+          "description": "Provider-native zone key (e.g. DK-DK2, GB). Optional after mapping to logical Zone."
+        },
+        "emissionFactorType": { "$ref": "#/$defs/emissionFactorType" },
+        "temporalGranularity": { "$ref": "#/$defs/temporalGranularity" },
+        "intervalSeconds": {
+          "type": "integer",
+          "enum": [300, 900, 1800, 3600]
+        },
+        "carbonFreePercentage": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 100
+        },
+        "quality": { "$ref": "#/$defs/dataQuality" },
+        "isEstimated": { "type": "boolean" },
+        "estimationMethod": {
+          "type": ["string", "null"]
+        },
+        "flowTraced": {
+          "type": "boolean",
+          "description": "true = consumption-based (Electricity Maps default). false = production-based."
+        },
+        "fetchedAt": { "$ref": "#/$defs/timestamp" },
+        "updatedAt": { "$ref": "#/$defs/timestamp" },
+        "expiresAt": { "$ref": "#/$defs/timestamp" }
+      }
+    }
+  },
+  "type": "object",
+  "$ref": "#/$defs/carbonRecord"
+}

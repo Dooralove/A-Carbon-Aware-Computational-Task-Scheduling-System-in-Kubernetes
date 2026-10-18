@@ -1,0 +1,8 @@
+# Test configuration for carbon-service (T4.1 skeleton).
+# Live API keys MUST come from CARBON_LIVE_API_KEY, not this file (DOD-CODE-07).
+port: 8080
+cacheTTL: 30s
+providerType: mock
+liveApiKey: ""
+replayDatasetPath: ""
+

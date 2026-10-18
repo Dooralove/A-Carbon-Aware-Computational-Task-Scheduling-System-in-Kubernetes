@@ -1,0 +1,117 @@
+# Second kube-scheduler process (profiles B/C). Does not replace kind default-scheduler.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: carbon-aware-scheduler
+  namespace: carbon-aware
+  labels:
+    app.kubernetes.io/name: carbon-aware-scheduler
+    app.kubernetes.io/part-of: carbon-aware-k8s
+    app.kubernetes.io/component: scheduler
+    app.kubernetes.io/version: "0.1.0"
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: carbon-aware-scheduler
+      app.kubernetes.io/component: scheduler
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: carbon-aware-scheduler
+        app.kubernetes.io/part-of: carbon-aware-k8s
+        app.kubernetes.io/component: scheduler
+        app.kubernetes.io/version: "0.1.0"
+    spec:
+      serviceAccountName: carbon-aware-scheduler
+      automountServiceAccountToken: true
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 65532
+        runAsGroup: 65532
+        fsGroup: 65532
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: kube-scheduler
+          image: carbon-aware-scheduler:0.1.0
+          imagePullPolicy: IfNotPresent
+          args:
+            - --config=/etc/kubernetes/scheduler/scheduler-config.yaml
+            - --leader-elect=false
+            - --bind-address=0.0.0.0
+            - --secure-port=10259
+            - --cert-dir=/tmp
+            - --v=2
+          ports:
+            - name: https-metrics
+              containerPort: 10259
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          volumeMounts:
+            - name: scheduler-config
+              mountPath: /etc/kubernetes/scheduler
+              readOnly: true
+            - name: tmp
+              mountPath: /tmp
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: https-metrics
+              scheme: HTTPS
+            initialDelaySeconds: 15
+            periodSeconds: 20
+            timeoutSeconds: 5
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: https-metrics
+              scheme: HTTPS
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: scheduler-config
+          configMap:
+            name: carbon-aware-scheduler-config
+            items:
+              - key: scheduler-config.yaml
+                path: scheduler-config.yaml
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: carbon-aware-scheduler
+  namespace: carbon-aware
+  labels:
+    app.kubernetes.io/name: carbon-aware-scheduler
+    app.kubernetes.io/part-of: carbon-aware-k8s
+    app.kubernetes.io/component: scheduler
+spec:
+  type: ClusterIP
+  selector:
+    app.kubernetes.io/name: carbon-aware-scheduler
+    app.kubernetes.io/component: scheduler
+  ports:
+    - name: https-metrics
+      port: 10259
+      targetPort: https-metrics
+      protocol: TCP

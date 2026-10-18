@@ -1,0 +1,95 @@
+# KubeSchedulerConfiguration for the custom binary (ARCH §12.4).
+# This is a ConfigMap: the component config is not a Kubernetes API resource.
+# Kind kube-scheduler is not patched; default-scheduler stays the baseline (A).
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: carbon-aware-scheduler-config
+  namespace: carbon-aware
+  labels:
+    app.kubernetes.io/name: carbon-aware-scheduler
+    app.kubernetes.io/part-of: carbon-aware-k8s
+    app.kubernetes.io/component: scheduler
+data:
+  scheduler-config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection:
+      leaderElect: false
+      resourceNamespace: carbon-aware
+      resourceName: carbon-aware-scheduler
+    clientConnection:
+      kubeconfig: ""
+      qps: 50
+      burst: 100
+    profiles:
+      - schedulerName: carbon-aware-scheduler
+        plugins:
+          multiPoint:
+            enabled:
+              - name: CarbonAware
+                weight: 13
+        pluginConfig:
+          - name: CarbonAware
+            args:
+              scoringMode: expected-cf
+              carbonWeight: 0.6
+              resourceWeight: 0.2
+              performanceWeight: 0.2
+              lambda: 1
+              powerIdleWatts: 40
+              powerMaxWatts: 100
+              powerProfiles:
+                standard:
+                  powerIdleWatts: 40
+                  powerMaxWatts: 100
+              runtimeClassSeconds:
+                batch: 1800
+                flexible: 3600
+                latency-sensitive: 300
+              maxDataAgeSeconds: 300
+              staleWarnSeconds: 90
+              clockSkewSeconds: 60
+              refreshIntervalSeconds: 30
+              httpTimeoutSeconds: 2
+              carbonServiceURL: http://carbon-data-service.carbon-aware.svc:8080
+              allowPodCarbonWeightOverride: false
+      - schedulerName: carbon-only-scheduler
+        plugins:
+          preScore:
+            enabled:
+              - name: CarbonAware
+            disabled:
+              - name: "*"
+          score:
+            enabled:
+              - name: CarbonAware
+                weight: 1
+            disabled:
+              - name: "*"
+        pluginConfig:
+          - name: CarbonAware
+            args:
+              scoringMode: current-ci
+              carbonWeight: 1.0
+              resourceWeight: 0.0
+              performanceWeight: 0.0
+              lambda: 1
+              powerIdleWatts: 40
+              powerMaxWatts: 100
+              powerProfiles:
+                standard:
+                  powerIdleWatts: 40
+                  powerMaxWatts: 100
+              runtimeClassSeconds:
+                batch: 1800
+                flexible: 3600
+                latency-sensitive: 300
+              maxDataAgeSeconds: 300
+              staleWarnSeconds: 90
+              clockSkewSeconds: 60
+              refreshIntervalSeconds: 30
+              httpTimeoutSeconds: 2
+              carbonServiceURL: http://carbon-data-service.carbon-aware.svc:8080
+              allowPodCarbonWeightOverride: false

@@ -1,0 +1,27 @@
+{
+  "zone": "north",
+  "unit": "gCO2e/kWh",
+  "issuedAt": "2026-09-01T10:00:00Z",
+  "source": "electricity-maps",
+  "emissionFactorType": "lifecycle",
+  "temporalGranularity": "5_minutes",
+  "forecastMode": "recorded",
+  "freshnessSeconds": 35,
+  "forecast": [
+    {
+      "timestamp": "2026-09-01T10:05:00Z",
+      "carbonIntensity": 84.0,
+      "horizonSeconds": 300
+    },
+    {
+      "timestamp": "2026-09-01T10:10:00Z",
+      "carbonIntensity": 91.2,
+      "horizonSeconds": 600
+    },
+    {
+      "timestamp": "2026-09-01T10:15:00Z",
+      "carbonIntensity": 88.5,
+      "horizonSeconds": 900
+    }
+  ]
+}

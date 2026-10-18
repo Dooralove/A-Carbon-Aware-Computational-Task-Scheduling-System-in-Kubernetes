@@ -1,0 +1,26 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "testdata_recorded_v1",
+  "source": "synthetic",
+  "unit": "gCO2e/kWh",
+  "emissionFactorType": "lifecycle",
+  "temporalGranularity": "5_minutes",
+  "intervalSeconds": 300,
+  "modelStart": "2026-09-01T10:00:00Z",
+  "modelEnd": "2026-09-01T10:30:00Z",
+  "forecastMode": "recorded",
+  "zones": [{ "zone": "north" }],
+  "series": [
+    { "zone": "north", "timestamp": "2026-09-01T10:00:00Z", "carbonIntensity": 100.0 }
+  ],
+  "forecastSnapshots": [
+    {
+      "zone": "north",
+      "issuedAt": "2026-09-01T10:10:00Z",
+      "forecast": [
+        { "timestamp": "2026-09-01T10:10:00Z", "carbonIntensity": 110.0, "horizonSeconds": 0 },
+        { "timestamp": "2026-09-01T10:15:00Z", "carbonIntensity": 120.0, "horizonSeconds": 300 }
+      ]
+    }
+  ]
+}

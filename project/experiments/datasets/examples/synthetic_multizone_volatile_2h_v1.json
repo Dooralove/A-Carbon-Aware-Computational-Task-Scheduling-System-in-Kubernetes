@@ -1,0 +1,672 @@
+{
+  "schemaVersion": "1.0.0",
+  "datasetId": "synthetic_multizone_volatile_2h_v1",
+  "source": "synthetic",
+  "scenario": "volatile",
+  "description": "5-minute series with step changes of hundreds of gCO2e/kWh and three ranking reversals.",
+  "unit": "gCO2e/kWh",
+  "emissionFactorType": "lifecycle",
+  "flowTraced": true,
+  "temporalGranularity": "5_minutes",
+  "intervalSeconds": 300,
+  "timeBase": "model",
+  "modelStart": "2026-09-01T10:00:00Z",
+  "modelEnd": "2026-09-01T12:00:00Z",
+  "seed": 3,
+  "forecastMode": "recorded",
+  "forecastHorizonSeconds": 3600,
+  "zones": [
+    {
+      "zone": "north",
+      "label": "volatile ranking participant"
+    },
+    {
+      "zone": "central",
+      "label": "volatile ranking participant"
+    },
+    {
+      "zone": "west",
+      "label": "volatile ranking participant"
+    }
+  ],
+  "variability": {
+    "coefficientOfVariationMin": 0.4458,
+    "coefficientOfVariationMax": 0.6446,
+    "maxStepGco2ePerKwh": 340.0,
+    "rankingReversals": 3
+  },
+  "series": [
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:00:00Z",
+      "carbonIntensity": 85.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:00:00Z",
+      "carbonIntensity": 260.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:00:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:05:00Z",
+      "carbonIntensity": 85.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:05:00Z",
+      "carbonIntensity": 260.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:05:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:10:00Z",
+      "carbonIntensity": 85.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:10:00Z",
+      "carbonIntensity": 260.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:10:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:15:00Z",
+      "carbonIntensity": 85.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:15:00Z",
+      "carbonIntensity": 260.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:15:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:20:00Z",
+      "carbonIntensity": 85.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:20:00Z",
+      "carbonIntensity": 260.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:20:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:25:00Z",
+      "carbonIntensity": 420.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:25:00Z",
+      "carbonIntensity": 250.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:25:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:30:00Z",
+      "carbonIntensity": 420.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:30:00Z",
+      "carbonIntensity": 250.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:30:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:35:00Z",
+      "carbonIntensity": 420.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:35:00Z",
+      "carbonIntensity": 250.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:35:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:40:00Z",
+      "carbonIntensity": 420.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:40:00Z",
+      "carbonIntensity": 250.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:40:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:45:00Z",
+      "carbonIntensity": 420.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:45:00Z",
+      "carbonIntensity": 250.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:45:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:50:00Z",
+      "carbonIntensity": 420.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:50:00Z",
+      "carbonIntensity": 250.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:50:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T10:55:00Z",
+      "carbonIntensity": 420.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T10:55:00Z",
+      "carbonIntensity": 250.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T10:55:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:00:00Z",
+      "carbonIntensity": 90.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:00:00Z",
+      "carbonIntensity": 400.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:00:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:05:00Z",
+      "carbonIntensity": 90.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:05:00Z",
+      "carbonIntensity": 400.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:05:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:10:00Z",
+      "carbonIntensity": 90.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:10:00Z",
+      "carbonIntensity": 400.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:10:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:15:00Z",
+      "carbonIntensity": 90.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:15:00Z",
+      "carbonIntensity": 400.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:15:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:20:00Z",
+      "carbonIntensity": 90.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:20:00Z",
+      "carbonIntensity": 400.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:20:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:25:00Z",
+      "carbonIntensity": 90.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:25:00Z",
+      "carbonIntensity": 400.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:25:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:30:00Z",
+      "carbonIntensity": 90.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:30:00Z",
+      "carbonIntensity": 400.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:30:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:35:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:35:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:35:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:40:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:40:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:40:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:45:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:45:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:45:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:50:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:50:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:50:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "north",
+      "timestamp": "2026-09-01T11:55:00Z",
+      "carbonIntensity": 380.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "central",
+      "timestamp": "2026-09-01T11:55:00Z",
+      "carbonIntensity": 70.0,
+      "isEstimated": false
+    },
+    {
+      "zone": "west",
+      "timestamp": "2026-09-01T11:55:00Z",
+      "carbonIntensity": 410.0,
+      "isEstimated": false
+    }
+  ],
+  "forecastSnapshots": [
+    {
+      "zone": "north",
+      "issuedAt": "2026-09-01T10:00:00Z",
+      "forecast": [
+        {
+          "timestamp": "2026-09-01T10:05:00Z",
+          "carbonIntensity": 85.0,
+          "horizonSeconds": 300
+        },
+        {
+          "timestamp": "2026-09-01T10:10:00Z",
+          "carbonIntensity": 85.0,
+          "horizonSeconds": 600
+        },
+        {
+          "timestamp": "2026-09-01T10:15:00Z",
+          "carbonIntensity": 85.0,
+          "horizonSeconds": 900
+        },
+        {
+          "timestamp": "2026-09-01T10:20:00Z",
+          "carbonIntensity": 85.0,
+          "horizonSeconds": 1200
+        },
+        {
+          "timestamp": "2026-09-01T10:25:00Z",
+          "carbonIntensity": 420.0,
+          "horizonSeconds": 1500
+        },
+        {
+          "timestamp": "2026-09-01T10:30:00Z",
+          "carbonIntensity": 420.0,
+          "horizonSeconds": 1800
+        },
+        {
+          "timestamp": "2026-09-01T10:35:00Z",
+          "carbonIntensity": 420.0,
+          "horizonSeconds": 2100
+        },
+        {
+          "timestamp": "2026-09-01T10:40:00Z",
+          "carbonIntensity": 420.0,
+          "horizonSeconds": 2400
+        },
+        {
+          "timestamp": "2026-09-01T10:45:00Z",
+          "carbonIntensity": 420.0,
+          "horizonSeconds": 2700
+        },
+        {
+          "timestamp": "2026-09-01T10:50:00Z",
+          "carbonIntensity": 420.0,
+          "horizonSeconds": 3000
+        },
+        {
+          "timestamp": "2026-09-01T10:55:00Z",
+          "carbonIntensity": 420.0,
+          "horizonSeconds": 3300
+        },
+        {
+          "timestamp": "2026-09-01T11:00:00Z",
+          "carbonIntensity": 90.0,
+          "horizonSeconds": 3600
+        }
+      ]
+    },
+    {
+      "zone": "central",
+      "issuedAt": "2026-09-01T10:00:00Z",
+      "forecast": [
+        {
+          "timestamp": "2026-09-01T10:05:00Z",
+          "carbonIntensity": 260.0,
+          "horizonSeconds": 300
+        },
+        {
+          "timestamp": "2026-09-01T10:10:00Z",
+          "carbonIntensity": 260.0,
+          "horizonSeconds": 600
+        },
+        {
+          "timestamp": "2026-09-01T10:15:00Z",
+          "carbonIntensity": 260.0,
+          "horizonSeconds": 900
+        },
+        {
+          "timestamp": "2026-09-01T10:20:00Z",
+          "carbonIntensity": 260.0,
+          "horizonSeconds": 1200
+        },
+        {
+          "timestamp": "2026-09-01T10:25:00Z",
+          "carbonIntensity": 250.0,
+          "horizonSeconds": 1500
+        },
+        {
+          "timestamp": "2026-09-01T10:30:00Z",
+          "carbonIntensity": 250.0,
+          "horizonSeconds": 1800
+        },
+        {
+          "timestamp": "2026-09-01T10:35:00Z",
+          "carbonIntensity": 250.0,
+          "horizonSeconds": 2100
+        },
+        {
+          "timestamp": "2026-09-01T10:40:00Z",
+          "carbonIntensity": 250.0,
+          "horizonSeconds": 2400
+        },
+        {
+          "timestamp": "2026-09-01T10:45:00Z",
+          "carbonIntensity": 250.0,
+          "horizonSeconds": 2700
+        },
+        {
+          "timestamp": "2026-09-01T10:50:00Z",
+          "carbonIntensity": 250.0,
+          "horizonSeconds": 3000
+        },
+        {
+          "timestamp": "2026-09-01T10:55:00Z",
+          "carbonIntensity": 250.0,
+          "horizonSeconds": 3300
+        },
+        {
+          "timestamp": "2026-09-01T11:00:00Z",
+          "carbonIntensity": 400.0,
+          "horizonSeconds": 3600
+        }
+      ]
+    },
+    {
+      "zone": "west",
+      "issuedAt": "2026-09-01T10:00:00Z",
+      "forecast": [
+        {
+          "timestamp": "2026-09-01T10:05:00Z",
+          "carbonIntensity": 410.0,
+          "horizonSeconds": 300
+        },
+        {
+          "timestamp": "2026-09-01T10:10:00Z",
+          "carbonIntensity": 410.0,
+          "horizonSeconds": 600
+        },
+        {
+          "timestamp": "2026-09-01T10:15:00Z",
+          "carbonIntensity": 410.0,
+          "horizonSeconds": 900
+        },
+        {
+          "timestamp": "2026-09-01T10:20:00Z",
+          "carbonIntensity": 410.0,
+          "horizonSeconds": 1200
+        },
+        {
+          "timestamp": "2026-09-01T10:25:00Z",
+          "carbonIntensity": 70.0,
+          "horizonSeconds": 1500
+        },
+        {
+          "timestamp": "2026-09-01T10:30:00Z",
+          "carbonIntensity": 70.0,
+          "horizonSeconds": 1800
+        },
+        {
+          "timestamp": "2026-09-01T10:35:00Z",
+          "carbonIntensity": 70.0,
+          "horizonSeconds": 2100
+        },
+        {
+          "timestamp": "2026-09-01T10:40:00Z",
+          "carbonIntensity": 70.0,
+          "horizonSeconds": 2400
+        },
+        {
+          "timestamp": "2026-09-01T10:45:00Z",
+          "carbonIntensity": 70.0,
+          "horizonSeconds": 2700
+        },
+        {
+          "timestamp": "2026-09-01T10:50:00Z",
+          "carbonIntensity": 70.0,
+          "horizonSeconds": 3000
+        },
+        {
+          "timestamp": "2026-09-01T10:55:00Z",
+          "carbonIntensity": 70.0,
+          "horizonSeconds": 3300
+        },
+        {
+          "timestamp": "2026-09-01T11:00:00Z",
+          "carbonIntensity": 380.0,
+          "horizonSeconds": 3600
+        }
+      ]
+    }
+  ]
+}

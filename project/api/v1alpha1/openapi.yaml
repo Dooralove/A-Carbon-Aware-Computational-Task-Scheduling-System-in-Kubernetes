@@ -1,0 +1,492 @@
+openapi: 3.0.3
+info:
+  title: Carbon Data Service API
+  description: |
+    REST contract of the Carbon Data Service (CDS). CDS normalizes carbon intensity
+    and never ranks nodes. The scheduler Cache Sync Worker is the only in-cluster
+    client; PreScore/Score MUST NOT call this API.
+
+    Canonical units: carbon intensity is always gCO2e/kWh (average consumption-based
+    lifecycle). Timestamps are RFC 3339 UTC with second precision.
+
+    Machine-readable companion of docs/ssot/03_api_contracts_ssot.md and
+    api/v1alpha1/types.go (group carbon-aware.io/v1alpha1).
+  version: 1.0.0
+  contact:
+    name: Carbon-Aware Kubernetes Scheduler
+servers:
+  - url: http://carbon-data-service.carbon-aware.svc:8080
+    description: In-cluster ClusterIP (kind stand)
+tags:
+  - name: health
+  - name: zones
+paths:
+  /api/v1/healthz:
+    get:
+      tags: [health]
+      operationId: getHealthz
+      summary: Liveness/readiness plus carbon-cache freshness
+      description: |
+        Kubernetes-style health probe. Identical handler to GET /api/v1/health
+        (SCOPE-IN-02). GET is idempotent and MUST NOT advance the replay clock.
+      responses:
+        "200":
+          description: Process is serving (status ok or degraded)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+        "503":
+          description: Cache never published or process not ready
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /api/v1/health:
+    get:
+      tags: [health]
+      operationId: getHealth
+      summary: Alias of /api/v1/healthz (SCOPE-IN-02 path)
+      responses:
+        "200":
+          description: Process is serving (status ok or degraded)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+        "503":
+          description: Cache never published or process not ready
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+  /api/v1/zones:
+    get:
+      tags: [zones]
+      operationId: listZones
+      summary: List known energy zones in the current CDS snapshot
+      description: |
+        Returns the atomic zone catalogue. Partial maps are never published.
+        GET is idempotent and MUST NOT advance the replay clock.
+      responses:
+        "200":
+          description: Snapshot exists (items may be empty only if no zones are configured)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ZoneProfileList"
+        "503":
+          description: Snapshot has never been published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+  /api/v1/zones/{zone}/current:
+    get:
+      tags: [zones]
+      operationId: getZoneCurrent
+      summary: Current CarbonRecord for a zone
+      parameters:
+        - $ref: "#/components/parameters/Zone"
+      responses:
+        "200":
+          description: Valid current observation (quality fresh, stale, or estimated)
+          headers:
+            X-Carbon-Data-Age-Seconds:
+              schema:
+                type: integer
+                minimum: 0
+              description: floor(now - fetchedAt) in seconds; not now - timestamp
+            X-Carbon-Quality:
+              schema:
+                $ref: "#/components/schemas/DataQuality"
+            X-Carbon-Source:
+              schema:
+                $ref: "#/components/schemas/CarbonSource"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarbonRecord"
+        "400":
+          description: Zone path is not a DNS-1123 label
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "404":
+          description: Zone is not in the snapshot (plugin treats as G-09 for that zone)
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "503":
+          description: Snapshot has never been published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+  /api/v1/zones/{zone}/forecast:
+    get:
+      tags: [zones]
+      operationId: getZoneForecast
+      summary: Forecast intervals for a zone
+      description: |
+        Returns recorded forecast pieces covering [issuedAt, issuedAt+duration).
+        An empty `forecast` array is a successful response and means persistence
+        (formula 2.11) is applied in the plugin, not by filling future actuals.
+        There is no endpoint that computes Score.
+      parameters:
+        - $ref: "#/components/parameters/Zone"
+        - name: duration
+          in: query
+          required: false
+          description: |
+            Kubernetes-style duration with a unit suffix (300s, 2h, 7200s).
+            Default 7200s. Maximum 86400s. Bare integers are rejected.
+          schema:
+            type: string
+            default: "7200s"
+            pattern: '^[0-9]+(ns|us|µs|ms|s|m|h)+$'
+            example: "7200s"
+      responses:
+        "200":
+          description: Forecast envelope; forecast array may be empty
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/CarbonForecast"
+        "400":
+          description: Invalid zone or duration
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "404":
+          description: Zone is not in the snapshot
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+        "503":
+          description: Snapshot has never been published
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Status"
+components:
+  parameters:
+    Zone:
+      name: zone
+      in: path
+      required: true
+      description: Logical energy zone (DNS-1123). Must match carbon-aware.io/zone.
+      schema:
+        $ref: "#/components/schemas/ZoneID"
+  schemas:
+    ZoneID:
+      type: string
+      minLength: 1
+      maxLength: 63
+      pattern: '^[a-z0-9]([a-z0-9._-]*[a-z0-9])?$'
+      example: north
+    RFC3339Time:
+      type: string
+      format: date-time
+      description: UTC RFC 3339, second precision, Zulu suffix
+      example: "2026-09-04T12:00:00Z"
+    IntensityUnit:
+      type: string
+      enum: [gCO2e/kWh]
+    DataQuality:
+      type: string
+      enum: [fresh, stale, estimated, invalid, missing]
+    CarbonSource:
+      type: string
+      enum: [electricity-maps, neso, historical-dataset, synthetic, mock]
+    EmissionFactorType:
+      type: string
+      enum: [lifecycle, direct]
+    TemporalGranularity:
+      type: string
+      enum: [5_minutes, 15_minutes, 30_minutes, 60_minutes]
+    ForecastMode:
+      type: string
+      enum: [none, persistence, recorded]
+    ProviderMode:
+      type: string
+      enum: [live, replay, mock]
+    ServingStatus:
+      type: string
+      enum: [ok, degraded, unavailable]
+    CarbonIntensity:
+      type: number
+      minimum: 0
+      maximum: 2000
+      description: gCO2e/kWh
+    CarbonRecord:
+      type: object
+      additionalProperties: false
+      required:
+        - zone
+        - timestamp
+        - carbonIntensity
+        - unit
+        - source
+        - emissionFactorType
+        - quality
+        - freshnessSeconds
+      properties:
+        apiVersion:
+          type: string
+          example: carbon-aware.io/v1alpha1
+        kind:
+          type: string
+          example: CarbonRecord
+        zone:
+          $ref: "#/components/schemas/ZoneID"
+        timestamp:
+          $ref: "#/components/schemas/RFC3339Time"
+        carbonIntensity:
+          $ref: "#/components/schemas/CarbonIntensity"
+        unit:
+          $ref: "#/components/schemas/IntensityUnit"
+        source:
+          $ref: "#/components/schemas/CarbonSource"
+        sourceZone:
+          type: string
+          example: NO-NO1
+        emissionFactorType:
+          $ref: "#/components/schemas/EmissionFactorType"
+        temporalGranularity:
+          $ref: "#/components/schemas/TemporalGranularity"
+        intervalSeconds:
+          type: integer
+          enum: [300, 900, 1800, 3600]
+        quality:
+          $ref: "#/components/schemas/DataQuality"
+        freshnessSeconds:
+          type: integer
+          minimum: 0
+          description: floor(now - fetchedAt) seconds; independent of interval width
+        carbonFreePercentage:
+          type: number
+          minimum: 0
+          maximum: 100
+        isEstimated:
+          type: boolean
+        estimationMethod:
+          type: string
+          nullable: true
+        flowTraced:
+          type: boolean
+        fetchedAt:
+          $ref: "#/components/schemas/RFC3339Time"
+        updatedAt:
+          $ref: "#/components/schemas/RFC3339Time"
+        expiresAt:
+          $ref: "#/components/schemas/RFC3339Time"
+      example:
+        apiVersion: carbon-aware.io/v1alpha1
+        kind: CarbonRecord
+        zone: north
+        carbonIntensity: 82.4
+        unit: gCO2e/kWh
+        timestamp: "2026-09-01T10:00:00Z"
+        source: electricity-maps
+        sourceZone: NO-NO1
+        freshnessSeconds: 35
+        quality: fresh
+        emissionFactorType: lifecycle
+        temporalGranularity: 5_minutes
+        intervalSeconds: 300
+        fetchedAt: "2026-09-01T10:00:35Z"
+        expiresAt: "2026-09-01T10:05:00Z"
+    ForecastInterval:
+      type: object
+      additionalProperties: false
+      required:
+        - timestamp
+        - carbonIntensity
+      properties:
+        timestamp:
+          $ref: "#/components/schemas/RFC3339Time"
+        expiresAt:
+          $ref: "#/components/schemas/RFC3339Time"
+        durationSeconds:
+          type: integer
+          minimum: 0
+        horizonSeconds:
+          type: integer
+          minimum: 0
+          description: timestamp - issuedAt, in seconds
+        carbonIntensity:
+          $ref: "#/components/schemas/CarbonIntensity"
+        unit:
+          $ref: "#/components/schemas/IntensityUnit"
+    CarbonForecast:
+      type: object
+      additionalProperties: false
+      required:
+        - zone
+        - unit
+        - issuedAt
+        - forecastMode
+        - forecast
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+          example: CarbonForecast
+        zone:
+          $ref: "#/components/schemas/ZoneID"
+        unit:
+          $ref: "#/components/schemas/IntensityUnit"
+        issuedAt:
+          $ref: "#/components/schemas/RFC3339Time"
+        source:
+          $ref: "#/components/schemas/CarbonSource"
+        emissionFactorType:
+          $ref: "#/components/schemas/EmissionFactorType"
+        temporalGranularity:
+          $ref: "#/components/schemas/TemporalGranularity"
+        forecastMode:
+          $ref: "#/components/schemas/ForecastMode"
+        horizon:
+          type: string
+          example: "7200s"
+        freshnessSeconds:
+          type: integer
+          minimum: 0
+        forecast:
+          type: array
+          maxItems: 288
+          items:
+            $ref: "#/components/schemas/ForecastInterval"
+    ZoneProfile:
+      type: object
+      additionalProperties: false
+      required:
+        - zone
+        - quality
+        - hasCurrent
+        - hasForecast
+        - freshnessSeconds
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+        zone:
+          $ref: "#/components/schemas/ZoneID"
+        sourceZone:
+          type: string
+        quality:
+          $ref: "#/components/schemas/DataQuality"
+        source:
+          $ref: "#/components/schemas/CarbonSource"
+        temporalGranularity:
+          $ref: "#/components/schemas/TemporalGranularity"
+        intervalSeconds:
+          type: integer
+        hasCurrent:
+          type: boolean
+        hasForecast:
+          type: boolean
+        freshnessSeconds:
+          type: integer
+          minimum: 0
+    ZoneProfileList:
+      type: object
+      additionalProperties: false
+      required:
+        - items
+      properties:
+        apiVersion:
+          type: string
+          example: carbon-aware.io/v1alpha1
+        kind:
+          type: string
+          example: ZoneProfileList
+        snapshotFetchedAt:
+          $ref: "#/components/schemas/RFC3339Time"
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/ZoneProfile"
+    HealthStatus:
+      type: object
+      additionalProperties: false
+      required:
+        - status
+        - mode
+        - ready
+        - dataAgeSeconds
+        - maxDataAgeSeconds
+        - zonesReady
+        - zonesTotal
+      properties:
+        apiVersion:
+          type: string
+        kind:
+          type: string
+          example: HealthStatus
+        status:
+          $ref: "#/components/schemas/ServingStatus"
+        mode:
+          $ref: "#/components/schemas/ProviderMode"
+        ready:
+          type: boolean
+        dataAgeSeconds:
+          type: integer
+          minimum: 0
+          description: Age of the CDS snapshot in seconds (now - snapshotFetchedAt)
+        maxDataAgeSeconds:
+          type: integer
+          minimum: 0
+        zonesReady:
+          type: integer
+          minimum: 0
+        zonesTotal:
+          type: integer
+          minimum: 0
+        modelTime:
+          $ref: "#/components/schemas/RFC3339Time"
+        message:
+          type: string
+    Status:
+      type: object
+      additionalProperties: false
+      required:
+        - apiVersion
+        - kind
+        - status
+        - message
+        - reason
+        - code
+      properties:
+        apiVersion:
+          type: string
+          example: v1
+        kind:
+          type: string
+          example: Status
+        status:
+          type: string
+          enum: [Failure]
+        message:
+          type: string
+        reason:
+          type: string
+          enum: [NotFound, BadRequest, ServiceUnavailable]
+        code:
+          type: integer
+          enum: [400, 404, 503]
+        details:
+          type: object
+          properties:
+            name:
+              type: string
+            kind:
+              type: string
+              example: Zone

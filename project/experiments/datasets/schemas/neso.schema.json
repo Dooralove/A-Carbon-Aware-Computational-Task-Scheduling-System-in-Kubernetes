@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://carbon-aware.io/schemas/neso.schema.json",
+  "title": "NESO (National Grid ESO) Carbon Intensity API response",
+  "description": "External schema for optional NESO ingest. Base URL https://api.carbonintensity.org.uk. Unit in source: gCO2/kWh, generation-only, 30-minute settlement periods. License CC BY 4.0. Not a live experimental source (REPRO-01).",
+  "type": "object",
+  "required": ["data"],
+  "properties": {
+    "data": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["from", "to", "intensity"],
+        "properties": {
+          "from": {
+            "type": "string",
+            "description": "Interval start UTC, ISO-8601 compact form YYYY-MM-DDThh:mmZ."
+          },
+          "to": {
+            "type": "string",
+            "description": "Interval end UTC (exclusive of next period)."
+          },
+          "intensity": {
+            "type": "object",
+            "required": ["index"],
+            "properties": {
+              "forecast": {
+                "type": "number",
+                "minimum": 0,
+                "description": "gCO2/kWh, generation-only operational CO2."
+              },
+              "actual": {
+                "type": ["number", "null"],
+                "minimum": 0,
+                "description": "Estimated actual gCO2/kWh. May be null for future periods; may be revised after the fact."
+              },
+              "index": {
+                "type": "string",
+                "enum": ["very low", "low", "moderate", "high", "very high"]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,10 @@
+# Default in-image CDS config for the kind stand (T6.2).
+# Live API keys MUST come from CARBON_LIVE_API_KEY, not this file (DOD-CODE-07).
+port: 8080
+cacheTTL: 30s
+httpTimeout: 2s
+providerType: replay
+liveApiKey: ""
+replayDatasetPath: /data/datasets/synthetic_multizone_volatile_2h_v1.json
+replayLoop: linear
+replayLookup: step
