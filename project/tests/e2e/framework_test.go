@@ -16,6 +16,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -355,14 +356,20 @@ func deploymentSettled(d *appsv1.Deployment, replicas int32) bool {
 		s.UpdatedReplicas == replicas && s.ReadyReplicas == replicas && s.AvailableReplicas == replicas
 }
 
+func patchCDSReplicas(t *testing.T, replicas int32) {
+	t.Helper()
+	patch := fmt.Sprintf(`{"spec":{"replicas":%d}}`, replicas)
+	if _, err := cs.AppsV1().Deployments(stackNamespace).Patch(context.Background(), cdsName, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
+		t.Fatalf("scale CDS: %v", err)
+	}
+}
+
+// scaleCDS sets CDS replicas and waits until the change has fully settled.
 func scaleCDS(t *testing.T, replicas int32) {
 	t.Helper()
 	ctx, cancel := context.WithTimeout(context.Background(), 2*time.Minute)
 	defer cancel()
-	patch := fmt.Sprintf(`{"spec":{"replicas":%d}}`, replicas)
-	if _, err := cs.AppsV1().Deployments(stackNamespace).Patch(ctx, cdsName, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
-		t.Fatalf("scale CDS: %v", err)
-	}
+	patchCDSReplicas(t, replicas)
 	err := wait.PollUntilContextCancel(ctx, time.Second, true, func(ctx context.Context) (bool, error) {
 		d, err := cs.AppsV1().Deployments(stackNamespace).Get(ctx, cdsName, metav1.GetOptions{})
 		if err != nil {
@@ -450,13 +457,29 @@ func setCDSDataset(t *testing.T, path string) {
 	restartDeployment(t, cdsName)
 }
 
-// setCDSServiceSelector rewires the CDS Service (empty endpoints = network cut
-// while the CDS process itself stays up).
-func setCDSServiceSelector(t *testing.T, name string) {
+// freezeCDS sends SIGSTOP to the carbon-service process on its kind node
+// (docker exec): the pod and its connections stay, but nothing is answered.
+func freezeCDS(t *testing.T) *corev1.Pod {
 	t.Helper()
-	patch := fmt.Sprintf(`{"spec":{"selector":{"app.kubernetes.io/name":%q}}}`, name)
-	if _, err := cs.CoreV1().Services(stackNamespace).Patch(context.Background(), cdsName, types.MergePatchType, []byte(patch), metav1.PatchOptions{}); err != nil {
-		t.Fatalf("patch CDS service selector: %v", err)
+	pods, err := cs.CoreV1().Pods(stackNamespace).List(context.Background(), metav1.ListOptions{LabelSelector: "app.kubernetes.io/name=" + cdsName})
+	if err != nil || len(pods.Items) != 1 {
+		t.Fatalf("want exactly one CDS pod: n=%d err=%v", len(pods.Items), err)
+	}
+	p := pods.Items[0]
+	signalCDS(t, p.Spec.NodeName, "STOP")
+	return &p
+}
+
+func thawCDS(t *testing.T, p *corev1.Pod) {
+	t.Helper()
+	signalCDS(t, p.Spec.NodeName, "CONT")
+}
+
+func signalCDS(t *testing.T, node, sig string) {
+	t.Helper()
+	out, err := exec.Command("docker", "exec", node, "pkill", "-"+sig, "-f", "/usr/local/bin/carbon-service").CombinedOutput()
+	if err != nil {
+		t.Fatalf("docker exec %s pkill -%s carbon-service: %v %s (chaos 2 needs the docker CLI of the kind host)", node, sig, err, out)
 	}
 }
 
@@ -635,7 +658,6 @@ func waitSnapshotAge(t *testing.T, timeout time.Duration, what string, cond func
 // dataset, and a fresh plugin snapshot that already reflects it.
 func ensureBaseline(t *testing.T) {
 	t.Helper()
-	setCDSServiceSelector(t, cdsName)
 	scaleCDS(t, 1)
 	setCDSDataset(t, baselineDataset)
 	waitSchedulerSees(t, "north", 100)

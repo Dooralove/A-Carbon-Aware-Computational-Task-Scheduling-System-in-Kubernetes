@@ -9,6 +9,7 @@
 #     refresh 2s, staleWarn 10s, maxDataAge 30s, httpTimeout 1s (canon 30/90/300/2).
 #     The tests read these values from the ConfigMap, so restoring the canon
 #     only means editing scheduler-config-patch.yaml;
+#   - CDS liveness tolerates a ~3 min freeze (chaos 2 SIGSTOPs the process);
 #   - kube-scheduler allows anonymous GET /metrics so tests can read
 #     carbon_aware_* counters through the API server pod proxy.
 apiVersion: kustomize.config.k8s.io/v1beta1
@@ -49,3 +50,12 @@ patches:
       - op: add
         path: /spec/template/spec/containers/0/args/-
         value: --authorization-always-allow-paths=/healthz,/readyz,/livez,/metrics
+  - target:
+      kind: Deployment
+      name: carbon-data-service
+    patch: |-
+      # Chaos 2 freezes the CDS process for ~1 min; keep kubelet from
+      # restarting it mid-scenario (canon: failureThreshold 3).
+      - op: replace
+        path: /spec/template/spec/containers/0/livenessProbe/failureThreshold
+        value: 12
