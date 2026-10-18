@@ -1,0 +1,856 @@
+{
+  "uid": "carbon-overview",
+  "title": "Carbon-Aware Scheduling Overview",
+  "description": "Stage 7 dashboard: carbon intensity, scheduler decisions, estimated carbon and power, latency, fallback and data freshness. Metric names: docs/ssot/metrics.md.",
+  "tags": [
+    "carbon-aware",
+    "scheduler",
+    "diploma"
+  ],
+  "timezone": "utc",
+  "editable": true,
+  "graphTooltip": 1,
+  "schemaVersion": 41,
+  "version": 1,
+  "refresh": "2s",
+  "time": {
+    "from": "now-30m",
+    "to": "now"
+  },
+  "timepicker": {
+    "refresh_intervals": [
+      "2s",
+      "5s",
+      "10s",
+      "30s",
+      "1m"
+    ]
+  },
+  "templating": {
+    "list": [
+      {
+        "type": "constant",
+        "name": "p_idle",
+        "label": "P_idle, W",
+        "query": "40",
+        "hide": 2,
+        "current": {
+          "text": "40",
+          "value": "40"
+        },
+        "options": [
+          {
+            "text": "40",
+            "value": "40",
+            "selected": true
+          }
+        ]
+      },
+      {
+        "type": "constant",
+        "name": "p_max",
+        "label": "P_max, W",
+        "query": "100",
+        "hide": 2,
+        "current": {
+          "text": "100",
+          "value": "100"
+        },
+        "options": [
+          {
+            "text": "100",
+            "value": "100",
+            "selected": true
+          }
+        ]
+      },
+      {
+        "type": "custom",
+        "name": "workload_ns",
+        "label": "Workload namespaces (regex)",
+        "query": "exp-.*,default,.*",
+        "current": {
+          "text": "exp-.*",
+          "value": "exp-.*"
+        },
+        "options": [
+          {
+            "text": "exp-.*",
+            "value": "exp-.*",
+            "selected": true
+          },
+          {
+            "text": "default",
+            "value": "default",
+            "selected": false
+          },
+          {
+            "text": ".*",
+            "value": ".*",
+            "selected": false
+          }
+        ],
+        "allowCustomValue": true
+      }
+    ]
+  },
+  "annotations": {
+    "list": []
+  },
+  "panels": [
+    {
+      "id": 1,
+      "type": "stat",
+      "title": "CDS data age",
+      "description": "Age of the Carbon Data Service snapshot (now - fetchedAt). Yellow above staleWarnSeconds (90 s), red above maxDataAgeSeconds (300 s, G-08).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "carbon_aware_data_age_seconds{job=\"carbon-data-service\"}",
+          "legendFormat": "CDS",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 90
+              },
+              {
+                "color": "red",
+                "value": 300
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area"
+      }
+    },
+    {
+      "id": 2,
+      "type": "stat",
+      "title": "Plugin snapshot age",
+      "description": "Age of the CarbonAware in-memory snapshot. Above 300 s the plugin falls back to Score=50 (G-08).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 6,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "carbon_aware_snapshot_age_seconds{job=\"kube-scheduler\"}",
+          "legendFormat": "plugin",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "decimals": 1,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 90
+              },
+              {
+                "color": "red",
+                "value": 300
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "area"
+      }
+    },
+    {
+      "id": 3,
+      "type": "stat",
+      "title": "Pods placed by CarbonAware",
+      "description": "carbon_aware_scheduler_decisions_total since the custom scheduler started (PostBind).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(carbon_aware_scheduler_decisions_total{job=\"kube-scheduler\"})",
+          "legendFormat": "decisions",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "value",
+        "graphMode": "area"
+      }
+    },
+    {
+      "id": 4,
+      "type": "stat",
+      "title": "Fallbacks (range)",
+      "description": "Degraded scoring attempts in the selected time range (G-08 + stale-in-window).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 0,
+        "w": 6,
+        "h": 4
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum(increase(carbon_aware_scheduler_fallback_total{job=\"kube-scheduler\"}[$__range]))",
+          "legendFormat": "fallbacks",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ]
+        },
+        "colorMode": "background",
+        "graphMode": "none"
+      }
+    },
+    {
+      "id": 5,
+      "type": "timeseries",
+      "title": "1. Carbon intensity by zone",
+      "description": "Current carbon intensity served by the CDS per energy zone (carbon_aware_zone_intensity_gco2_kwh). Replay datasets change it over model time.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 4,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "max by (zone) (carbon_aware_zone_intensity_gco2_kwh{job=\"carbon-data-service\"})",
+          "legendFormat": "{{zone}}",
+          "refId": "A",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "gCO2e/kWh",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true,
+            "lineInterpolation": "stepAfter"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 6,
+      "type": "barchart",
+      "title": "2. Scheduler decisions by zone and node",
+      "description": "Cumulative pods bound by CarbonAware profiles, per selected node (zone in the label). Counter value since scheduler start, so it matches the number of pods submitted.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 4,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (zone, node) (carbon_aware_scheduler_decisions_total{job=\"kube-scheduler\"})",
+          "legendFormat": "{{zone}} / {{node}}",
+          "refId": "A",
+          "range": false,
+          "instant": true,
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0,
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xField": "node",
+        "colorByField": "zone",
+        "showValue": "always",
+        "legend": {
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": false
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true
+            },
+            "renameByName": {
+              "Value": "pods"
+            }
+          }
+        },
+        {
+          "id": "sortBy",
+          "options": {
+            "sort": [
+              {
+                "field": "zone"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "type": "bargauge",
+      "title": "3. Estimated cumulative carbon footprint over the range (gCO2e)",
+      "description": "Total over the selected time range. ex-post: marginal CF of workload pods per strategy namespace = integral of cAdvisor CPU rate x (P_max - P_idle)/cores x CI(zone of the node) / 3.6e6 (10 s steps). Run each strategy in its own namespace (exp-baseline, exp-carbon-only, exp-carbon-aware) to compare Baseline vs Carbon-Aware. ex-ante: plugin expected CF (2.10) of the pods it bound. Idle power is excluded; cluster CF including idle is computed offline (metrics.md section 4).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 13,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum_over_time((sum by (namespace) (rate(container_cpu_usage_seconds_total{job=\"cadvisor\",container!=\"\",pod!=\"\",namespace=~\"$workload_ns\"}[30s]) * on (node) group_left () (($p_max - $p_idle) / max by (node) (machine_cpu_cores{job=\"cadvisor\"})) * on (zone) group_left () max by (zone) (carbon_aware_zone_intensity_gco2_kwh{job=\"carbon-data-service\"})) / 3600000)[$__range:10s]) * 10",
+          "legendFormat": "ex-post {{namespace}}",
+          "refId": "A",
+          "range": false,
+          "instant": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (scoring_mode) (increase(carbon_aware_pod_estimated_carbon_gco2_sum{job=\"kube-scheduler\"}[$__range]))",
+          "legendFormat": "ex-ante plugin {{scoring_mode}}",
+          "refId": "B",
+          "range": false,
+          "instant": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "gCO2e",
+          "decimals": 3,
+          "min": 0,
+          "color": {
+            "mode": "palette-classic"
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "displayMode": "gradient",
+        "showUnfilled": true,
+        "valueMode": "color",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "values": false
+        }
+      }
+    },
+    {
+      "id": 8,
+      "type": "timeseries",
+      "title": "4. Estimated node power (W)",
+      "description": "Linear power model P(u) = P_idle + (P_max - P_idle) * u (2.2), u = pod CPU usage from cAdvisor / machine cores. P_idle and P_max match the scheduler pluginConfig (40 W / 100 W).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 13,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "$p_idle + ($p_max - $p_idle) * clamp_max(sum by (node, zone) (rate(container_cpu_usage_seconds_total{job=\"cadvisor\",container!=\"\",pod!=\"\",zone!=\"\"}[30s])) / on (node) group_left () max by (node) (machine_cpu_cores{job=\"cadvisor\"}), 1)",
+          "legendFormat": "{{zone}} / {{node}}",
+          "refId": "A",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (zone) ($p_idle + ($p_max - $p_idle) * clamp_max(sum by (node, zone) (rate(container_cpu_usage_seconds_total{job=\"cadvisor\",container!=\"\",pod!=\"\",zone!=\"\"}[30s])) / on (node) group_left () max by (node) (machine_cpu_cores{job=\"cadvisor\"}), 1))",
+          "legendFormat": "zone {{zone}} total",
+          "refId": "B",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "watt",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 9,
+      "type": "timeseries",
+      "title": "5. Scheduling latency p50 / p95 / p99",
+      "description": "scheduler_scheduling_attempt_duration_seconds per scheduler: default-scheduler (strategy A) vs carbon-aware-scheduler (B/C). Empty until pods are scheduled in the last minute.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 22,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.5, sum by (le, scheduler) (rate(scheduler_scheduling_attempt_duration_seconds_bucket{job=\"kube-scheduler\"}[1m])))",
+          "legendFormat": "p50 {{scheduler}}",
+          "refId": "A",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.95, sum by (le, scheduler) (rate(scheduler_scheduling_attempt_duration_seconds_bucket{job=\"kube-scheduler\"}[1m])))",
+          "legendFormat": "p95 {{scheduler}}",
+          "refId": "B",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.99, sum by (le, scheduler) (rate(scheduler_scheduling_attempt_duration_seconds_bucket{job=\"kube-scheduler\"}[1m])))",
+          "legendFormat": "p99 {{scheduler}}",
+          "refId": "C",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 10,
+      "type": "timeseries",
+      "title": "5b. CarbonAware extension point p99",
+      "description": "Own duration of each CarbonAware hook (carbon_aware_plugin_duration_seconds) next to the non-sampled framework histogram (overhead canon, metrics.md section 1).",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 22,
+        "w": 12,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.99, sum by (le, extension_point) (rate(carbon_aware_plugin_duration_seconds_bucket{job=\"kube-scheduler\"}[1m])))",
+          "legendFormat": "p99 {{extension_point}}",
+          "refId": "A",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "histogram_quantile(0.99, sum by (le, extension_point) (rate(scheduler_framework_extension_point_duration_seconds_bucket{job=\"kube-scheduler\",scheduler=\"carbon-aware-scheduler\",extension_point=~\"PreScore|Score\"}[1m])))",
+          "legendFormat": "framework p99 {{extension_point}}",
+          "refId": "B",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "s",
+          "custom": {
+            "drawStyle": "line",
+            "lineWidth": 2,
+            "fillOpacity": 10,
+            "showPoints": "never",
+            "spanNulls": true
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    },
+    {
+      "id": 11,
+      "type": "timeseries",
+      "title": "6. Fallback events & data freshness",
+      "description": "Bars: degraded scoring attempts by reason (empty, dead, all_invalid = G-08; stale = SM-STALE). Lines (right axis): snapshot ages with the 90 s / 300 s thresholds.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 31,
+        "w": 24,
+        "h": 9
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "sum by (reason) (increase(carbon_aware_scheduler_fallback_total{job=\"kube-scheduler\"}[$__rate_interval]))",
+          "legendFormat": "fallback {{reason}}",
+          "refId": "A",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "carbon_aware_snapshot_age_seconds{job=\"kube-scheduler\"}",
+          "legendFormat": "plugin snapshot age",
+          "refId": "B",
+          "range": true
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "prometheus"
+          },
+          "expr": "carbon_aware_data_age_seconds{job=\"carbon-data-service\"}",
+          "legendFormat": "CDS data age",
+          "refId": "C",
+          "range": true
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "custom": {
+            "drawStyle": "bars",
+            "lineWidth": 1,
+            "fillOpacity": 80,
+            "showPoints": "never",
+            "spanNulls": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/age/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "s"
+              },
+              {
+                "id": "custom.axisPlacement",
+                "value": "right"
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.thresholdsStyle",
+                "value": {
+                  "mode": "dashed"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "green",
+                      "value": null
+                    },
+                    {
+                      "color": "yellow",
+                      "value": 90
+                    },
+                    {
+                      "color": "red",
+                      "value": 300
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "legend": {
+          "displayMode": "table",
+          "placement": "bottom",
+          "calcs": [
+            "lastNotNull",
+            "max"
+          ]
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      }
+    }
+  ]
+}
