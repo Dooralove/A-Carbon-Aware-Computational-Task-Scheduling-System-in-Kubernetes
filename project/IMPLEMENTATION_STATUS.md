@@ -17,7 +17,7 @@
 | 5 | Плагин планировщика `CarbonAware` | готово, **Gate 5 PASS** | `gate_5_scheduler_plugin_audit.md` |
 | 6 | Интеграция в kind: образы, манифесты, e2e-binding | готово, **Gate 6 PASS** (ручной прогон 2026-09-04) | `gate_6_k8s_integration_report.md` |
 | 7 | Мониторинг: Prometheus + Grafana | **не начат** (разблокирован) | — |
-| 8 | Автоматизированные e2e / integration / failure-тесты | **не начат** (разблокирован) | — |
+| 8 | Автоматизированные e2e / integration / failure-тесты | готово, **Gate 8 PASS** (5 прогонов `make test-all`, 2026-10-18) | `gate_8_testing_audit.md` |
 | — | Эксперименты baseline vs carbon-aware, анализ результатов | **не начат** | — |
 | — | Текст диплома | главы 1–3 (черновики) | `docs/diploma_text/` |
 
