@@ -1,0 +1,120 @@
+# Prometheus configuration for the kind stand (T7.2). Lightweight: one replica,
+# local TSDB, 2 s scrape interval for experiment granularity.
+#
+# Jobs (names are referenced by deployments/grafana/dashboards/carbon_overview.json):
+#   kube-scheduler       kind default-scheduler (strategy A) + carbon-aware-scheduler (B/C),
+#                        HTTPS :10259 with the Prometheus ServiceAccount token
+#   carbon-data-service  CDS :8080/metrics (plain HTTP, same listener as REST)
+#   cadvisor             kubelet :10250/metrics/cadvisor, labelled with node and zone
+#   node-exporter        DaemonSet :9100, labelled with node
+#
+# The default kube-scheduler listens on 0.0.0.0 only because
+# deployments/kind/cluster-config.yaml patches bind-address (kind default: 127.0.0.1).
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: prometheus-config
+  namespace: monitoring
+  labels:
+    app.kubernetes.io/name: prometheus
+    app.kubernetes.io/part-of: carbon-aware-k8s
+data:
+  prometheus.yml: |
+    global:
+      scrape_interval: 2s
+      scrape_timeout: 2s
+      evaluation_interval: 2s
+      external_labels:
+        stand: carbon-aware-kind
+
+    scrape_configs:
+      - job_name: kube-scheduler
+        scheme: https
+        tls_config:
+          insecure_skip_verify: true   # self-signed serving certs (kind / --cert-dir)
+        authorization:
+          credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names: [kube-system, carbon-aware]
+        relabel_configs:
+          # kind static pod (component=kube-scheduler) or the custom Deployment.
+          - source_labels: [__meta_kubernetes_pod_label_component, __meta_kubernetes_pod_label_app_kubernetes_io_name]
+            regex: "kube-scheduler;|;carbon-aware-scheduler"
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_phase]
+            regex: Running
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_ip]
+            target_label: __address__
+            replacement: "$1:10259"
+          - source_labels: [__meta_kubernetes_pod_label_component, __meta_kubernetes_pod_label_app_kubernetes_io_name]
+            regex: "kube-scheduler;"
+            target_label: scheduler
+            replacement: default-scheduler
+          - source_labels: [__meta_kubernetes_pod_label_component, __meta_kubernetes_pod_label_app_kubernetes_io_name]
+            regex: ";carbon-aware-scheduler"
+            target_label: scheduler
+            replacement: carbon-aware-scheduler
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod
+          - source_labels: [__meta_kubernetes_namespace]
+            target_label: namespace
+
+      - job_name: carbon-data-service
+        kubernetes_sd_configs:
+          - role: endpoints
+            namespaces:
+              names: [carbon-aware]
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            regex: "carbon-data-service;http"
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_name]
+            target_label: pod
+          - source_labels: [__meta_kubernetes_namespace]
+            target_label: namespace
+
+      - job_name: cadvisor
+        scheme: https
+        metrics_path: /metrics/cadvisor
+        tls_config:
+          insecure_skip_verify: true   # kubelet serving cert is self-signed in kind
+        authorization:
+          credentials_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+        kubernetes_sd_configs:
+          - role: node
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_node_name]
+            target_label: node
+          - source_labels: [__meta_kubernetes_node_label_carbon_aware_io_zone]
+            target_label: zone
+          - source_labels: [__meta_kubernetes_node_label_carbon_aware_io_power_profile]
+            target_label: power_profile
+        metric_relabel_configs:
+          # Keep the series the dashboard and the experiment export use; cAdvisor
+          # is the largest source on the stand.
+          - source_labels: [__name__]
+            regex: "container_cpu_usage_seconds_total|container_memory_working_set_bytes|machine_cpu_cores|machine_memory_bytes"
+            action: keep
+
+      - job_name: node-exporter
+        kubernetes_sd_configs:
+          - role: pod
+            namespaces:
+              names: [monitoring]
+        relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_label_app_kubernetes_io_name]
+            regex: node-exporter
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_ip]
+            target_label: __address__
+            replacement: "$1:9100"
+          - source_labels: [__meta_kubernetes_pod_node_name]
+            target_label: node
+
+      - job_name: prometheus
+        static_configs:
+          - targets: ["localhost:9090"]

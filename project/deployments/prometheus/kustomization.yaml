@@ -1,0 +1,8 @@
+# Monitoring stack: kubectl apply -k deployments/prometheus
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - prometheus-rbac.yaml
+  - prometheus-config.yaml
+  - prometheus-deployment.yaml
+  - node-exporter.yaml

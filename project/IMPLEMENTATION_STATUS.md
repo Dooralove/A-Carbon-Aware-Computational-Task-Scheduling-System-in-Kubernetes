@@ -16,7 +16,7 @@
 | 4 | Carbon Data Service (провайдеры, Replay, кэш, REST) | готово, **Gate 4 PASS** | `gate_4_carbon_service_review.md` |
 | 5 | Плагин планировщика `CarbonAware` | готово, **Gate 5 PASS** | `gate_5_scheduler_plugin_audit.md` |
 | 6 | Интеграция в kind: образы, манифесты, e2e-binding | готово, **Gate 6 PASS** (ручной прогон 2026-09-04) | `gate_6_k8s_integration_report.md` |
-| 7 | Мониторинг: Prometheus + Grafana | **не начат** (разблокирован) | — |
+| 7 | Мониторинг: Prometheus + Grafana | готово, **Gate 7 PASS** (kind-прогон 2026-10-18, 5×50 Pod) | `gate_7_monitoring_validation.md`, ADR-003 (proposed) |
 | 8 | Автоматизированные e2e / integration / failure-тесты | **не начат** (разблокирован) | — |
 | — | Эксперименты baseline vs carbon-aware, анализ результатов | **не начат** | — |
 | — | Текст диплома | главы 1–3 (черновики) | `docs/diploma_text/` |
@@ -100,7 +100,7 @@
 
 ## 6. Что не сделано
 
-1. **Stage 7 — мониторинг.** `deployments/prometheus/` и `deployments/grafana/` содержат только README; `pkg/metrics/` пуст. Нужно: scrape `carbon_aware_*` с `:10259` шедулера (с токеном ServiceAccount) и `carbon_aware_cds_*` с CDS `:8080`, дашборд Grafana.
+1. **Stage 7 — мониторинг.** Сделано (Gate 7 PASS). Остаётся подтвердить ADR-003 (PostBind и поправка `metrics.md` v1.1.0) и прогнать стек на машине с cgroup v2.
 2. **Stage 8 — тестирование.** Автоматизировать e2e-binding (`DOD-TEST-06`), integration CDS↔плагин (`DOD-TEST-05`), failure-матрицу (`DOD-TEST-07`: CDS недоступен, stale, invalid). Профиль B (`carbon-only-scheduler`) на стенде не прогонялся.
 3. **Эксперименты.** `experiments/workloads/`, `scenarios/`, `results/` пусты; в `docs/ssot/experiment-protocol.md` сценарии и критерии успеха помечены TBD.
 4. **Текст диплома.** Нет глав о реализации, экспериментах и выводах.

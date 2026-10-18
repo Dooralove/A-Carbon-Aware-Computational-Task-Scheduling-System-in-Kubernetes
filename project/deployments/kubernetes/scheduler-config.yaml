@@ -68,6 +68,10 @@ data:
                 weight: 1
             disabled:
               - name: "*"
+          # Decision metrics only (ADR-003); DefaultBinder still binds.
+          postBind:
+            enabled:
+              - name: CarbonAware
         pluginConfig:
           - name: CarbonAware
             args:
