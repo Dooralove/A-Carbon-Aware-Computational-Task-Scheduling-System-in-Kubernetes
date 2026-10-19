@@ -103,7 +103,7 @@
 
 1. **Stage 7 — мониторинг.** Сделано (Gate 7 PASS). Остаётся подтвердить ADR-003 (PostBind и поправка `metrics.md` v1.1.0) и прогнать стек на машине с cgroup v2.
 2. **Stage 8 — тестирование.** Автоматизировать e2e-binding (`DOD-TEST-06`), integration CDS↔плагин (`DOD-TEST-05`), failure-матрицу (`DOD-TEST-07`: CDS недоступен, stale, invalid). Профиль B (`carbon-only-scheduler`) на стенде не прогонялся.
-3. **Эксперименты.** `experiments/workloads/`, `scenarios/`, `results/` пусты; в `docs/ssot/experiment-protocol.md` сценарии и критерии успеха помечены TBD.
+3. **Эксперименты.** T10.1–T10.4 сделаны: `raw_data_matrix.csv` (1500 строк) и `raw_data_stress.csv` (2550 строк), отчёт [`docs/audit/T10-experiments-report.md`](docs/audit/T10-experiments-report.md). Остаётся статистический анализ (Stage 11).
 4. **Текст диплома.** Нет глав о реализации, экспериментах и выводах.
 
 ## 7. Известные замечания
