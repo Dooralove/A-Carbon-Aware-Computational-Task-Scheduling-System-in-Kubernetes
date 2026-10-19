@@ -1,0 +1,19 @@
+# Initial CDS config of the experiment stand. The runner (experiments/runner)
+# rewrites replayDatasetPath and replayTimeMultiplier for each scenario and
+# restarts the Deployment, so model time starts at the dataset's modelStart.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: carbon-data-service
+  namespace: carbon-aware
+data:
+  config.yaml: |
+    port: 8080
+    cacheTTL: 2s
+    httpTimeout: 2s
+    providerType: replay
+    liveApiKey: ""
+    replayDatasetPath: /data/datasets/synthetic_multizone_stable_24h_v1.json
+    replayTimeMultiplier: 300
+    replayLoop: linear
+    replayLookup: step

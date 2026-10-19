@@ -1,0 +1,20 @@
+# Stage 10 experiment overlay of the runtime stack (T10.2-T10.4).
+# Apply after `make kind-up`, `make kind-load` (plus the workload image) and
+# the Prometheus stack:
+#   kubectl apply -k deployments/prometheus
+#   kubectl apply -k experiments/manifests
+#
+# Differences from deployments/kubernetes (and only these):
+#   - CDS replays the datasets baked into its image with cacheTTL 2s; the
+#     runner picks dataset and replay multiplier per scenario;
+#   - scheduler refresh/stale/dead thresholds as in the E2E overlay
+#     (2s/10s/30s) and pod carbon-weight override on carbon-aware-scheduler;
+#   - namespace carbon-exp for task Pods.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+  - ../../deployments/kubernetes
+  - namespace.yaml
+patches:
+  - path: cds-config-patch.yaml
+  - path: scheduler-config-patch.yaml

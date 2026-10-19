@@ -1,0 +1,99 @@
+# Stage 10 experiment scheduler config (see kustomization.yaml). Differences
+# from deployments/kubernetes/scheduler-config.yaml, identical for every run:
+#   - refresh 2s, staleWarn 10s, maxDataAge 30s, httpTimeout 1s (as the E2E
+#     overlay): replay runs time-compressed, a 30 s refresh would lag the
+#     replayed CI by up to several model hours;
+#   - carbon-aware-scheduler allows carbon-aware.io/carbon-weight, so the T10.4
+#     w_C series changes the weight per Pod without restarting the scheduler.
+#     Pods without the annotation keep w_C=0.6, w_R=0.2, w_P=0.2.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: carbon-aware-scheduler-config
+  namespace: carbon-aware
+data:
+  scheduler-config.yaml: |
+    apiVersion: kubescheduler.config.k8s.io/v1
+    kind: KubeSchedulerConfiguration
+    leaderElection:
+      leaderElect: false
+      resourceNamespace: carbon-aware
+      resourceName: carbon-aware-scheduler
+    clientConnection:
+      kubeconfig: ""
+      qps: 50
+      burst: 100
+    profiles:
+      - schedulerName: carbon-aware-scheduler
+        plugins:
+          multiPoint:
+            enabled:
+              - name: CarbonAware
+                weight: 13
+        pluginConfig:
+          - name: CarbonAware
+            args:
+              scoringMode: expected-cf
+              carbonWeight: 0.6
+              resourceWeight: 0.2
+              performanceWeight: 0.2
+              lambda: 1
+              powerIdleWatts: 40
+              powerMaxWatts: 100
+              powerProfiles:
+                standard:
+                  powerIdleWatts: 40
+                  powerMaxWatts: 100
+              runtimeClassSeconds:
+                batch: 1800
+                flexible: 3600
+                latency-sensitive: 300
+              maxDataAgeSeconds: 30
+              staleWarnSeconds: 10
+              clockSkewSeconds: 60
+              refreshIntervalSeconds: 2
+              httpTimeoutSeconds: 1
+              carbonServiceURL: http://carbon-data-service.carbon-aware.svc:8080
+              allowPodCarbonWeightOverride: true
+      - schedulerName: carbon-only-scheduler
+        plugins:
+          preScore:
+            enabled:
+              - name: CarbonAware
+            disabled:
+              - name: "*"
+          score:
+            enabled:
+              - name: CarbonAware
+                weight: 1
+            disabled:
+              - name: "*"
+          # Decision metrics only (ADR-003); DefaultBinder still binds.
+          postBind:
+            enabled:
+              - name: CarbonAware
+        pluginConfig:
+          - name: CarbonAware
+            args:
+              scoringMode: current-ci
+              carbonWeight: 1.0
+              resourceWeight: 0.0
+              performanceWeight: 0.0
+              lambda: 1
+              powerIdleWatts: 40
+              powerMaxWatts: 100
+              powerProfiles:
+                standard:
+                  powerIdleWatts: 40
+                  powerMaxWatts: 100
+              runtimeClassSeconds:
+                batch: 1800
+                flexible: 3600
+                latency-sensitive: 300
+              maxDataAgeSeconds: 30
+              staleWarnSeconds: 10
+              clockSkewSeconds: 60
+              refreshIntervalSeconds: 2
+              httpTimeoutSeconds: 1
+              carbonServiceURL: http://carbon-data-service.carbon-aware.svc:8080
+              allowPodCarbonWeightOverride: false
