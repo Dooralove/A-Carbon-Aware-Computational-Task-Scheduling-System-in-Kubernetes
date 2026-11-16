@@ -1,0 +1,9 @@
+# Namespace for experiment task Pods. The runner deletes every Pod here
+# before each run (clean initial state, T10.2 step 1).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: carbon-exp
+  labels:
+    app.kubernetes.io/part-of: carbon-aware-k8s
+    app.kubernetes.io/component: experiments

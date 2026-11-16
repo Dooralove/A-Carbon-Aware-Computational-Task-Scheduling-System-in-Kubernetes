@@ -82,6 +82,10 @@ kubeconfig.*
 experiments/results/**
 !experiments/results/.gitkeep
 !experiments/results/README.md
+# Stage 10 raw experiment data (diploma evidence, a few MB of CSV)
+!experiments/results/raw_data_*.csv
+!experiments/results/runs_data_*.csv
+!experiments/results/calibration_*.jsonl
 *.log
 *.tmp
 tmp/
